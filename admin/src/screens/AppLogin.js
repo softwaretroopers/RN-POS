@@ -1,19 +1,18 @@
 import React from "react";
-
 import {
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
+  StatusBar,
 } from "react-native";
+import * as Animatable from "react-native-animatable";
 import * as Yup from "yup";
 
-import AppColors from "../configs/AppColors";
 import { AppForm, AppFormInput, AppSubmitButton } from "../components/forms";
-
-import { Dimensions, StatusBar } from "react-native";
-import * as Animatable from "react-native-animatable";
+import AppColors from "../configs/AppColors";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().min(3).label("Email Address"),
