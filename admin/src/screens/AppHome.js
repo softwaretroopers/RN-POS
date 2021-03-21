@@ -12,7 +12,7 @@ import {
 
 import AppColors from "../configs/AppColors";
 
-const users = [
+const invoices = [
   {
     invoiceID: "#011801",
     shopName: "Anonymous Shop",
@@ -81,10 +81,10 @@ function AppHome() {
     <View>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <FlatList
-        data={users}
-        keyExtractor={(user) => user.invoiceID.toString()}
+        data={invoices}
+        keyExtractor={(invoice) => invoice.invoiceID.toString()}
         renderItem={({ item }) => (
-          <View style={styles.userInfoSection}>
+          <View style={styles.invoiceInfoSection}>
             <View
               style={{
                 flexDirection: "row",
@@ -98,7 +98,7 @@ function AppHome() {
                   justifyContent: "center",
                 }}
               >
-                <Avatar.Icon size={40} icon="office-building" />
+                <Avatar.Icon size={40} icon="file-document" />
                 <Title style={{ fontSize: 12 }}>{item.invoiceID}</Title>
               </View>
 
@@ -151,7 +151,6 @@ function AppHome() {
             onStateChange={onStateChange}
             onPress={() => {
               if (open) {
-                // do something if the speed dial is open
               }
             }}
           />
