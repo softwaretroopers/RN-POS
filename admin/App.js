@@ -6,9 +6,9 @@ import AppStock from "./src/screens/AppStock";
 import AppEmployee from "./src/screens/AppEmployee";
 import AppShop from "./src/screens/AppShop";
 import AppProfileEdit from "./src/screens/AppProfileEdit";
-import DrawerContent from "./src/screens/DrawerContent";
 import AppProfile from "./src/screens/AppProfile";
+import AppStockPicker from "./src/screens/AppStockPicker";
 
 export default function App() {
-  return <AppProfile></AppProfile>;
+  return <AppStockPicker></AppStockPicker>;
 }

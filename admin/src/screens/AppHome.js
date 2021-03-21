@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginRight: 3,
   },
-  userInfoSection: {
+  invoiceInfoSection: {
     backgroundColor: AppColors.background,
     paddingVertical: "3%",
     paddingHorizontal: "5%",

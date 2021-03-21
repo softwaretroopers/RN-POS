@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Text,
-} from "react-native";
+import { View, StyleSheet, StatusBar, FlatList } from "react-native";
 import { Appbar, TextInput, Avatar } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
@@ -26,6 +20,7 @@ function AppProfileEdit(props) {
 
   return (
     <View style={styles.screen}>
+      <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <Appbar style={{ backgroundColor: AppColors.primary }}>
         <Appbar.BackAction />
         <Appbar.Content title="Edit Information" />

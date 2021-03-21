@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, StatusBar } from "react-native";
 import { FAB, Avatar, Title, Subheading, Caption } from "react-native-paper";
 import * as Animatable from "react-native-animatable";
 
@@ -8,6 +8,7 @@ import AppColors from "../configs/AppColors";
 function AppProfile() {
   return (
     <View>
+      <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <Animatable.View
         animation="bounceInDown"
         duration={1500}
