@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, StyleSheet, StatusBar, FlatList } from "react-native";
-import { Appbar, TextInput, Avatar } from "react-native-paper";
+import { Appbar, TextInput } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
-import RenderIf from "../configs/RenderIf";
+import AppRenderIf from "../configs/AppRenderIf";
 
 const userDetails = [
   {
@@ -24,7 +24,7 @@ function AppProfileEdit(props) {
       <Appbar style={{ backgroundColor: AppColors.primary }}>
         <Appbar.BackAction />
         <Appbar.Content title="Edit Information" />
-        {RenderIf(
+        {AppRenderIf(
           visibility,
           <Appbar.Action
             icon="square-edit-outline"
@@ -33,7 +33,7 @@ function AppProfileEdit(props) {
             }}
           />
         )}
-        {RenderIf(
+        {AppRenderIf(
           !visibility,
           <Appbar.Action
             icon="content-save"

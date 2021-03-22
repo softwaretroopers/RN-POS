@@ -7,8 +7,10 @@ import AppEmployee from "./src/screens/AppEmployee";
 import AppShop from "./src/screens/AppShop";
 import AppProfileEdit from "./src/screens/AppProfileEdit";
 import AppProfile from "./src/screens/AppProfile";
-import AppStockPicker from "./src/screens/AppStockPicker";
+import AppModal from "./src/screens/AppModal";
+import AppAddEmployee from "./src/screens/AppAddEmployee";
+import AppAddShop from "./src/screens/AppAddShop";
 
 export default function App() {
-  return <AppStockPicker></AppStockPicker>;
+  return <AppAddShop></AppAddShop>;
 }

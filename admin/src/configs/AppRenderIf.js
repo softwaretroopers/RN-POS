@@ -1,4 +1,4 @@
-export default function RenderIf(condition, content) {
+export default function AppRenderIf(condition, content) {
   if (condition) {
     return content;
   } else {
