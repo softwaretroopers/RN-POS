@@ -134,12 +134,12 @@ function AppHome(props) {
               {
                 icon: "package-variant",
                 label: "Stock",
-                onPress: () => console.log("Pressed stock"),
+                onPress: () => props.navigation.navigate("AddStockScreen"),
               },
               {
                 icon: "file-document",
                 label: "Invoice",
-                onPress: () => console.log("Pressed invoice"),
+                onPress: () => props.navigation.navigate("AddInvoiceScreen"),
               },
               {
                 icon: "account-multiple",

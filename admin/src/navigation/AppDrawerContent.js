@@ -41,6 +41,13 @@ function AppDrawerContent(props) {
               icon="package-variant"
             />
             <Drawer.Item
+              label="Store"
+              onPress={() => {
+                props.navigation.navigate("StoreScreens");
+              }}
+              icon="store"
+            />
+            <Drawer.Item
               label="Shops"
               onPress={() => {
                 props.navigation.navigate("ShopScreens");

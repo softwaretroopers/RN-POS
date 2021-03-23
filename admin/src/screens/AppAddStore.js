@@ -13,18 +13,16 @@ import { AppForm, AppFormInput, AppSubmitButton } from "../components/forms";
 import AppColors from "../configs/AppColors";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email().required().min(3).label("Email Address"),
-  password: Yup.string().required().min(8).label("Password"),
-  fName: Yup.string().required().min(3).label("Full Name"),
-  mNumber: Yup.string().required().min(10).label("Mobile Number"),
+  stName: Yup.string().required().min(3).label("Store Name"),
+  supName: Yup.string().min(3).label("Owner's Name"),
 });
 
-function AppAddEmployee(props) {
+function AppAddStore(props) {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <View style={styles.header}>
-        <Text style={styles.text}>Enter New User Details</Text>
+        <Text style={styles.text}>Enter New Store Details</Text>
       </View>
       <View
         style={[
@@ -44,44 +42,21 @@ function AppAddEmployee(props) {
               <AppFormInput
                 autoCapitalize="words"
                 autoCorrect={false}
-                icon="account"
-                label="Full Name"
-                placeholder="Enter the Full Name"
-                name="fName"
+                icon="store"
+                label="Store Location"
+                placeholder="Enter the Store Location"
+                name="stName"
                 textContentType="name"
                 mode="outlined"
               />
-
               <AppFormInput
-                autoCapitalize="none"
+                autoCapitalize="words"
                 autoCorrect={false}
-                icon="email"
-                name="email"
-                label="Email Address"
-                placeholder="Enter the Email Address"
-                textContentType="emailAddress"
-                mode="outlined"
-              />
-              <AppFormInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                icon="cellphone-android"
-                label="Mobile Number"
-                placeholder="Enter the Mobile Number"
-                name="mNumber"
-                textContentType="telephoneNumber"
-                mode="outlined"
-                axLength={10}
-              />
-              <AppFormInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                icon="lock"
-                label="Password"
-                placeholder="Enter Your Password"
-                name="password"
-                secureTextEntry
-                textContentType="password"
+                icon="account"
+                label="Supervisor"
+                placeholder="Enter the Supervisor's Name"
+                name="supName"
+                textContentType="name"
                 mode="outlined"
               />
 
@@ -100,7 +75,7 @@ function AppAddEmployee(props) {
   );
 }
 
-export default AppAddEmployee;
+export default AppAddStore;
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.15;

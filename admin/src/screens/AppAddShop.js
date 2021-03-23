@@ -35,7 +35,7 @@ function AppAddShop(props) {
         <View style={styles.innerFooter}>
           <AppForm
             initialValues={{ email: "", password: "" }}
-            onSubmit={null}
+            onSubmit={(values) => props.navigation.goBack()}
             validationSchema={validationSchema}
           >
             <ScrollView>

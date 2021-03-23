@@ -15,12 +15,17 @@ import AppAddEmployee from "../screens/AppAddEmployee";
 
 import AppDrawerContent from "./AppDrawerContent";
 import AppColors from "../configs/AppColors";
+import AppAddStock from "../screens/AppAddStock";
+import AppStore from "../screens/AppStore";
+import AppAddStore from "../screens/AppAddStore";
+import AppAddInvoice from "../screens/AppAddInvoice";
 
 const MainStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
 const ShopStack = createStackNavigator();
 const StockStack = createStackNavigator();
+const StoreStack = createStackNavigator();
 const EmployeeStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 
@@ -58,6 +63,7 @@ const DrawerNav = () => (
     <Drawer.Screen name="HomeScreens" component={HomeScreens} />
     <Drawer.Screen name="StockScreens" component={StockScreens} />
     <Drawer.Screen name="ShopScreens" component={ShopScreens} />
+    <Drawer.Screen name="StoreScreens" component={StoreScreens} />
     <Drawer.Screen name="EmployeeScreens" component={EmployeeScreens} />
     <Drawer.Screen name="ProfileScreens" component={ProfileScreens} />
   </Drawer.Navigator>
@@ -89,6 +95,13 @@ const HomeScreens = (props) => (
       }}
     />
     <HomeStack.Screen
+      name="AddInvoiceScreen"
+      component={AppAddInvoice}
+      options={{
+        title: "New Invoice",
+      }}
+    />
+    <HomeStack.Screen
       name="AddShopScreen"
       component={AppAddShop}
       options={{
@@ -100,6 +113,13 @@ const HomeScreens = (props) => (
       component={AppAddEmployee}
       options={{
         title: "New Employee",
+      }}
+    />
+    <HomeStack.Screen
+      name="AddStockScreen"
+      component={AppAddStock}
+      options={{
+        title: "New Item",
       }}
     />
   </HomeStack.Navigator>
@@ -128,6 +148,13 @@ const StockScreens = (props) => (
             onPress={() => props.navigation.openDrawer()}
           />
         ),
+      }}
+    />
+    <StockStack.Screen
+      name="AddStockScreen"
+      component={AppAddStock}
+      options={{
+        title: "New Item",
       }}
     />
   </StockStack.Navigator>
@@ -166,6 +193,41 @@ const ShopScreens = (props) => (
       }}
     />
   </ShopStack.Navigator>
+);
+
+const StoreScreens = (props) => (
+  <StoreStack.Navigator
+    screenOptions={{
+      headerStyle: { backgroundColor: AppColors.primary },
+      headerTintColor: AppColors.background,
+      headerTitleStyle: {
+        fontWeight: "bold",
+      },
+    }}
+  >
+    <StoreStack.Screen
+      name="StockScreen"
+      component={AppStore}
+      options={{
+        title: "Stock",
+        headerLeft: () => (
+          <Button
+            labelStyle={{ fontSize: 24 }}
+            icon="menu"
+            color={AppColors.background}
+            onPress={() => props.navigation.openDrawer()}
+          />
+        ),
+      }}
+    />
+    <ShopStack.Screen
+      name="AddStoreScreen"
+      component={AppAddStore}
+      options={{
+        title: "New Store",
+      }}
+    />
+  </StoreStack.Navigator>
 );
 
 const EmployeeScreens = (props) => (
