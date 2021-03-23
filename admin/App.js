@@ -1,4 +1,5 @@
 import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
 
 import AppLogin from "./src/screens/AppLogin";
 import AppHome from "./src/screens/AppHome";
@@ -10,7 +11,12 @@ import AppProfile from "./src/screens/AppProfile";
 import AppModal from "./src/screens/AppModal";
 import AppAddEmployee from "./src/screens/AppAddEmployee";
 import AppAddShop from "./src/screens/AppAddShop";
+import AppNav from "./src/navigation/AppNav";
 
 export default function App() {
-  return <AppAddShop></AppAddShop>;
+  return (
+    <NavigationContainer>
+      <AppNav></AppNav>
+    </NavigationContainer>
+  );
 }

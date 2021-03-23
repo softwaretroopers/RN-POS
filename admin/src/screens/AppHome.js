@@ -70,7 +70,7 @@ const invoices = [
   },
 ];
 
-function AppHome() {
+function AppHome(props) {
   const [state, setState] = React.useState({ open: false });
 
   const onStateChange = ({ open }) => setState({ open });
@@ -129,7 +129,7 @@ function AppHome() {
               {
                 icon: "office-building",
                 label: "Shop",
-                onPress: () => console.log("Pressed shop"),
+                onPress: () => props.navigation.navigate("AddShopScreen"),
               },
               {
                 icon: "package-variant",
@@ -142,9 +142,9 @@ function AppHome() {
                 onPress: () => console.log("Pressed invoice"),
               },
               {
-                icon: "account",
+                icon: "account-multiple",
                 label: "Employee",
-                onPress: () => console.log("Pressed employee"),
+                onPress: () => props.navigation.navigate("AddEmployeeScreen"),
                 small: false,
               },
             ]}

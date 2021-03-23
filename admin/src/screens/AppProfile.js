@@ -5,7 +5,7 @@ import * as Animatable from "react-native-animatable";
 
 import AppColors from "../configs/AppColors";
 
-function AppProfile() {
+function AppProfile(props) {
   return (
     <View>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
@@ -14,7 +14,12 @@ function AppProfile() {
         duration={1500}
         style={styles.accounttop}
       >
-        <FAB style={styles.fab} small icon="pen" />
+        <FAB
+          style={styles.fab}
+          small
+          icon="pen"
+          onPress={() => props.navigation.navigate("ProfileEditScreen")}
+        />
         <Avatar.Icon size={100} icon="office-building" />
         <Title style={{ color: AppColors.background }}>Anonymous Inc</Title>
         <Subheading style={{ color: AppColors.background }}>

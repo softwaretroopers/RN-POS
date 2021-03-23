@@ -3,12 +3,10 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
   ScrollView,
   Dimensions,
   StatusBar,
 } from "react-native";
-import * as Animatable from "react-native-animatable";
 import * as Yup from "yup";
 
 import { AppForm, AppFormInput, AppSubmitButton } from "../components/forms";
@@ -26,16 +24,15 @@ function AppAddShop(props) {
       <View style={styles.header}>
         <Text style={styles.text}>Enter New Shop Details</Text>
       </View>
-      <Animatable.View
+      <View
         style={[
           styles.footer,
           {
             backgroundColor: AppColors.background,
           },
         ]}
-        animation="fadeInUpBig"
       >
-        <Animatable.View animation="pulse" style={styles.innerFooter}>
+        <View style={styles.innerFooter}>
           <AppForm
             initialValues={{ email: "", password: "" }}
             onSubmit={null}
@@ -72,8 +69,8 @@ function AppAddShop(props) {
               />
             </ScrollView>
           </AppForm>
-        </Animatable.View>
-      </Animatable.View>
+        </View>
+      </View>
     </View>
   );
 }

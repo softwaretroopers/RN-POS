@@ -7,8 +7,8 @@ import {
   ScrollView,
   Dimensions,
   StatusBar,
+  Image,
 } from "react-native";
-import * as Animatable from "react-native-animatable";
 import * as Yup from "yup";
 
 import { AppForm, AppFormInput, AppSubmitButton } from "../components/forms";
@@ -24,28 +24,26 @@ function AppLogin(props) {
     <View style={styles.container}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <View style={styles.header}>
-        <Animatable.Image
-          animation="zoomInDown"
+        <Image
           source={require("../assets/logo.png")}
           style={styles.logo}
           resizeMode="stretch"
         />
       </View>
-      <Animatable.View
+      <View
         style={[
           styles.footer,
           {
             backgroundColor: AppColors.background,
           },
         ]}
-        animation="fadeInUpBig"
       >
         <Text style={styles.text}>Welcome!</Text>
 
-        <Animatable.View animation="pulse" style={styles.innerFooter}>
+        <View animation="pulse" style={styles.innerFooter}>
           <AppForm
             initialValues={{ email: "", password: "" }}
-            onSubmit={null}
+            onSubmit={(values) => props.navigation.navigate("DrawerNav")}
             validationSchema={validationSchema}
           >
             <ScrollView>
@@ -84,8 +82,8 @@ function AppLogin(props) {
               </TouchableOpacity>
             </ScrollView>
           </AppForm>
-        </Animatable.View>
-      </Animatable.View>
+        </View>
+      </View>
     </View>
   );
 }

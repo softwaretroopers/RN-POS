@@ -22,7 +22,7 @@ function AppProfileEdit(props) {
     <View style={styles.screen}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <Appbar style={{ backgroundColor: AppColors.primary }}>
-        <Appbar.BackAction />
+        <Appbar.BackAction onPress={() => props.navigation.goBack()} />
         <Appbar.Content title="Edit Information" />
         {AppRenderIf(
           visibility,

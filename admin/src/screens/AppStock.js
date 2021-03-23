@@ -1,14 +1,6 @@
 import React from "react";
 import { View, StatusBar, FlatList, StyleSheet } from "react-native";
-import {
-  Avatar,
-  Title,
-  Caption,
-  FAB,
-  Portal,
-  Provider,
-  Chip,
-} from "react-native-paper";
+import { Avatar, Title, FAB, Chip } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
 
@@ -148,11 +140,6 @@ const stocks = [
 ];
 
 function AppStock(props) {
-  const [state, setState] = React.useState({ open: false });
-
-  const onStateChange = ({ open }) => setState({ open });
-
-  const { open } = state;
   return (
     <View style={styles.screen}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
@@ -174,42 +161,7 @@ function AppStock(props) {
           </View>
         )}
       />
-      <Provider>
-        <Portal>
-          <FAB.Group
-            open={open}
-            icon={open ? "close" : "plus"}
-            actions={[
-              {
-                icon: "office-building",
-                label: "Shop",
-                onPress: () => console.log("Pressed shop"),
-              },
-              {
-                icon: "package-variant",
-                label: "Stock",
-                onPress: () => console.log("Pressed stock"),
-              },
-              {
-                icon: "file-document",
-                label: "Invoice",
-                onPress: () => console.log("Pressed invoice"),
-              },
-              {
-                icon: "account",
-                label: "Employee",
-                onPress: () => console.log("Pressed employee"),
-                small: false,
-              },
-            ]}
-            onStateChange={onStateChange}
-            onPress={() => {
-              if (open) {
-              }
-            }}
-          />
-        </Portal>
-      </Provider>
+      <FAB style={styles.fab} icon="plus" />
     </View>
   );
 }
