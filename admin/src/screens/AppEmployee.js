@@ -1,13 +1,6 @@
 import React from "react";
 import { View, StatusBar, FlatList, StyleSheet } from "react-native";
-import {
-  Avatar,
-  Title,
-  Caption,
-  FAB,
-  Portal,
-  Provider,
-} from "react-native-paper";
+import { Avatar, Title, Caption, FAB } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
 
