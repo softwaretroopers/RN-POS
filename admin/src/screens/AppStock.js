@@ -194,7 +194,11 @@ function AppStock(props) {
           </View>
         )}
       />
-      <FAB style={styles.fab} icon="plus" />
+      <FAB
+        style={styles.fab}
+        icon="plus"
+        onPress={() => props.navigation.navigate("AddStockScreen")}
+      />
     </View>
   );
 }
