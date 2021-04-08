@@ -7,6 +7,7 @@ import {
   Dimensions,
   StatusBar,
 } from "react-native";
+import { Caption, Title, ToggleButton } from "react-native-paper";
 import * as Yup from "yup";
 
 import { AppForm, AppFormInput, AppSubmitButton } from "../components/forms";
@@ -18,6 +19,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function AppAddShop(props) {
+  const [value, setValue] = React.useState("a");
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
@@ -49,17 +51,23 @@ function AppAddShop(props) {
                 textContentType="name"
                 mode="outlined"
               />
-              <AppFormInput
-                autoCapitalize="words"
-                autoCorrect={false}
-                icon="account"
-                label="Owner"
-                placeholder="Enter the Owner's Name"
-                name="oName"
-                textContentType="name"
-                mode="outlined"
-              />
-
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <Caption style={{ fontSize: 16 }}>Price Category </Caption>
+                <ToggleButton.Row
+                  onValueChange={(value) => setValue(value)}
+                  value={value}
+                >
+                  <ToggleButton icon="alpha-a" value="a"></ToggleButton>
+                  <ToggleButton icon="alpha-b" value="b"></ToggleButton>
+                  <ToggleButton icon="alpha-c" value="c"></ToggleButton>
+                </ToggleButton.Row>
+              </View>
               <AppSubmitButton
                 color="primary"
                 mode="contained"

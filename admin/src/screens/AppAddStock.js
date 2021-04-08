@@ -19,7 +19,9 @@ import AppColors from "../configs/AppColors";
 
 const validationSchema = Yup.object().shape({
   iName: Yup.string().required().min(3).label("Shop Name"),
-  uPrice: Yup.number().required().min(1).label("Unit Price"),
+  uPriceA: Yup.number().required().min(1).label("Unit Price A"),
+  uPriceB: Yup.number().min(1).label("Unit Price B"),
+  uPriceC: Yup.number().min(1).label("Unit Price C"),
   store: Yup.object().required().label("Store"),
   qty: Yup.number().required().label("Quantity"),
   desc: Yup.string().label("Description"),
@@ -45,15 +47,13 @@ function AppAddStock(props) {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={styles.text}>Add New Item</Text>
-      </View>
+
       <AppForm
         initialValues={{ email: "", password: "" }}
         onSubmit={(values) => props.navigation.goBack()}
         validationSchema={validationSchema}
       >
-        <ScrollView>
+        <ScrollView style={{ marginTop: "3%" }}>
           <AppFormInput
             autoCapitalize="words"
             autoCorrect={false}
@@ -67,10 +67,30 @@ function AppAddStock(props) {
           <AppFormInput
             autoCapitalize="words"
             autoCorrect={false}
-            icon="currency-usd-circle"
-            label="Unit Price"
-            placeholder="Enter the Unit Price"
-            name="uPrice"
+            icon="alpha-a"
+            label="Unit Price A"
+            placeholder="Enter the Unit Price for A Category"
+            name="uPriceA"
+            mode="flat"
+            keyboardType="number-pad"
+          />
+          <AppFormInput
+            autoCapitalize="words"
+            autoCorrect={false}
+            icon="alpha-b"
+            label="Unit Price B"
+            placeholder="Enter the Unit Price for B Category"
+            name="uPriceB"
+            mode="flat"
+            keyboardType="number-pad"
+          />
+          <AppFormInput
+            autoCapitalize="words"
+            autoCorrect={false}
+            icon="alpha-c"
+            label="Unit Price C"
+            placeholder="Enter the Unit Price for C Category"
+            name="uPriceC"
             mode="flat"
             keyboardType="number-pad"
           />
@@ -114,7 +134,7 @@ function AppAddStock(props) {
           >
             <IconButton
               style={{ position: "absolute", left: "2%" }}
-              icon="account"
+              icon="checkbox-multiple-marked"
               size={20}
               color={AppColors.black}
             />
@@ -134,15 +154,14 @@ function AppAddStock(props) {
               onValueChange={onToggleSwitch}
             />
           </View>
-
-          <AppSubmitButton
-            color="primary"
-            mode="contained"
-            icon="check-circle"
-            text="Submit"
-            style={styles.button}
-          />
         </ScrollView>
+        <AppSubmitButton
+          color="primary"
+          mode="contained"
+          icon="check-circle"
+          text="Submit"
+          style={styles.button}
+        />
       </AppForm>
     </View>
   );
@@ -170,7 +189,7 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: "4%",
-    marginTop: "5%",
+    marginVertical: "3%",
   },
   text: {
     color: AppColors.primary,

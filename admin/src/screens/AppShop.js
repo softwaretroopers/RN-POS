@@ -8,52 +8,52 @@ const shops = [
   {
     shopID: "#001",
     shopName: "Anonymous Shop",
-    owner: "Mr.Anonymous",
+    category: "A",
   },
   {
     shopID: "#002",
     shopName: "Anonymous Shop",
-    owner: "Mr.Anonymous",
+    category: "A",
   },
   {
     shopID: "#003",
     shopName: "Anonymous Shop",
-    owner: "Mr.Anonymous",
+    category: "A",
   },
   {
     shopID: "#004",
     shopName: "Anonymous Shop",
-    owner: "Mr.Anonymous",
+    category: "A",
   },
   {
     shopID: "#005",
     shopName: "Anonymous Shop",
-    owner: "Mr.Anonymous",
+    category: "A",
   },
   {
     shopID: "#006",
     shopName: "Anonymous Shop",
-    owner: "Mr.Anonymous",
+    category: "A",
   },
   {
     shopID: "#007",
     shopName: "Anonymous Shop",
-    owner: "Mr.Anonymous",
+    category: "A",
   },
   {
     shopID: "#008",
     shopName: "Anonymous Shop",
-    owner: "Mr.Anonymous",
+    category: "A",
   },
   {
     shopID: "#009",
     shopName: "Anonymous Shop",
-    owner: "Mr.Anonymous",
+    category: "A",
   },
   {
     shopID: "#010",
     shopName: "Anonymous Shop",
-    owner: "Mr.Anonymous",
+    category: "A",
   },
 ];
 
@@ -68,7 +68,7 @@ function AppShop(props) {
           <View style={styles.card}>
             <Avatar.Icon size={40} icon="office-building" />
             <Title style={styles.title}>{item.shopName}</Title>
-            <Caption>{item.owner}</Caption>
+            <Caption>Category: {item.category}</Caption>
           </View>
         )}
       />

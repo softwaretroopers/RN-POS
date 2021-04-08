@@ -19,10 +19,12 @@ import AppAddStock from "../screens/AppAddStock";
 import AppStore from "../screens/AppStore";
 import AppAddStore from "../screens/AppAddStore";
 import AppAddInvoice from "../screens/AppAddInvoice";
+import AppAddReturn from "../screens/AppAddReturn";
 
 const MainStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
+const InvoiceStack = createStackNavigator();
 const ShopStack = createStackNavigator();
 const StockStack = createStackNavigator();
 const StoreStack = createStackNavigator();
@@ -95,10 +97,11 @@ const HomeScreens = (props) => (
       }}
     />
     <HomeStack.Screen
-      name="AddInvoiceScreen"
-      component={AppAddInvoice}
+      name="AddInvoiceScreens"
+      component={AddInvoiceScreens}
       options={{
-        title: "New Invoice",
+        title: "Add Invoice",
+        headerShown: false,
       }}
     />
     <HomeStack.Screen
@@ -123,6 +126,33 @@ const HomeScreens = (props) => (
       }}
     />
   </HomeStack.Navigator>
+);
+
+const AddInvoiceScreens = (props) => (
+  <InvoiceStack.Navigator
+    screenOptions={{
+      headerStyle: { backgroundColor: AppColors.primary },
+      headerTintColor: AppColors.background,
+      headerTitleStyle: {
+        fontWeight: "bold",
+      },
+    }}
+  >
+    <InvoiceStack.Screen
+      name="AddInvoiceScreen"
+      component={AppAddInvoice}
+      options={{
+        title: "New Invoice",
+      }}
+    />
+    <InvoiceStack.Screen
+      name="AddReturnScreen"
+      component={AppAddReturn}
+      options={{
+        title: "Deduct Returns",
+      }}
+    />
+  </InvoiceStack.Navigator>
 );
 
 const StockScreens = (props) => (
@@ -206,10 +236,10 @@ const StoreScreens = (props) => (
     }}
   >
     <StoreStack.Screen
-      name="StockScreen"
+      name="StoreScreen"
       component={AppStore}
       options={{
-        title: "Stock",
+        title: "Store",
         headerLeft: () => (
           <Button
             labelStyle={{ fontSize: 24 }}

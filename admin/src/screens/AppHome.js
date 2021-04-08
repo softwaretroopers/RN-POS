@@ -139,7 +139,7 @@ function AppHome(props) {
               {
                 icon: "file-document",
                 label: "Invoice",
-                onPress: () => props.navigation.navigate("AddInvoiceScreen"),
+                onPress: () => props.navigation.navigate("AddInvoiceScreens"),
               },
               {
                 icon: "account-multiple",

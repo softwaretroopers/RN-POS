@@ -18,7 +18,6 @@ const stocks = [
     itemName: "Anonymous Item",
     quantity: "10",
     unitPrice: "250",
-
     availability: true,
     store: "Kadawatha",
   },
