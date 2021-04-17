@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, StatusBar } from "react-native";
-import { FAB, Avatar, Title, Subheading, Caption } from "react-native-paper";
+import { Avatar, Title, Subheading, Caption } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
 
@@ -8,13 +8,7 @@ function AppProfile(props) {
   return (
     <View>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
-      <View style={styles.accounttop}>
-        <FAB
-          style={styles.fab}
-          small
-          icon="pen"
-          onPress={() => props.navigation.navigate("ProfileEditScreen")}
-        />
+      <View style={styles.accountTop}>
         <Avatar.Icon size={100} icon="account" />
         <Title style={{ color: AppColors.background }}>Mr. Anonymous</Title>
 
@@ -28,7 +22,7 @@ function AppProfile(props) {
 }
 
 const styles = StyleSheet.create({
-  accounttop: {
+  accountTop: {
     backgroundColor: AppColors.primary,
     borderRadius: 20,
     margin: "2%",
@@ -58,12 +52,6 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 20,
     marginLeft: 10,
-  },
-  fab: {
-    position: "absolute",
-    right: 10,
-    top: 10,
-    backgroundColor: "white",
   },
 });
 

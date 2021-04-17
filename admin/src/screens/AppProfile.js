@@ -1,7 +1,6 @@
 import React from "react";
 import { View, StyleSheet, StatusBar } from "react-native";
 import { FAB, Avatar, Title, Subheading, Caption } from "react-native-paper";
-import * as Animatable from "react-native-animatable";
 
 import AppColors from "../configs/AppColors";
 
@@ -9,11 +8,7 @@ function AppProfile(props) {
   return (
     <View>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
-      <Animatable.View
-        animation="bounceInDown"
-        duration={1500}
-        style={styles.accounttop}
-      >
+      <View style={styles.accountTop}>
         <FAB
           style={styles.fab}
           small
@@ -28,13 +23,13 @@ function AppProfile(props) {
         <Caption style={{ color: AppColors.background }}>
           support@softwaretroopers.com
         </Caption>
-      </Animatable.View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  accounttop: {
+  accountTop: {
     backgroundColor: AppColors.primary,
     borderRadius: 20,
     margin: "2%",

@@ -7,17 +7,18 @@ import AppLogin from "../screens/AppLogin";
 import AppHome from "../screens/AppHome";
 import AppStock from "../screens/AppStock";
 import AppProfile from "../screens/AppProfile";
-import AppProfileEdit from "../screens/AppProfileEdit";
 
 import AppDrawerContent from "./AppDrawerContent";
 import AppColors from "../configs/AppColors";
 import AppAddInvoice from "../screens/AppAddInvoice";
+import AppAddReturn from "../screens/AppAddReturn";
 
 const MainStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
 const StockStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
+const InvoiceStack = createStackNavigator();
 
 const AppNav = () => (
   <MainStack.Navigator
@@ -82,13 +83,41 @@ const HomeScreens = (props) => (
       }}
     />
     <HomeStack.Screen
+      name="AddInvoiceScreens"
+      component={AddInvoiceScreens}
+      options={{
+        title: "Add Invoice",
+        headerShown: false,
+      }}
+    />
+  </HomeStack.Navigator>
+);
+
+const AddInvoiceScreens = (props) => (
+  <InvoiceStack.Navigator
+    screenOptions={{
+      headerStyle: { backgroundColor: AppColors.primary },
+      headerTintColor: AppColors.background,
+      headerTitleStyle: {
+        fontWeight: "bold",
+      },
+    }}
+  >
+    <InvoiceStack.Screen
       name="AddInvoiceScreen"
       component={AppAddInvoice}
       options={{
         title: "New Invoice",
       }}
     />
-  </HomeStack.Navigator>
+    <InvoiceStack.Screen
+      name="AddReturnScreen"
+      component={AppAddReturn}
+      options={{
+        title: "Deduct Returns",
+      }}
+    />
+  </InvoiceStack.Navigator>
 );
 
 const StockScreens = (props) => (
@@ -143,11 +172,6 @@ const ProfileScreens = (props) => (
           />
         ),
       }}
-    />
-    <ProfileStack.Screen
-      name="ProfileEditScreen"
-      component={AppProfileEdit}
-      options={{ headerShown: false }}
     />
   </ProfileStack.Navigator>
 );

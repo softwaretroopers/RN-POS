@@ -109,7 +109,7 @@ function AppHome(props) {
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => props.navigation.navigate("AddInvoiceScreen")}
+        onPress={() => props.navigation.navigate("AddInvoiceScreens")}
       />
     </View>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Avatar, Button } from "react-native-paper";
+import { Button } from "react-native-paper";
 
 import AppLogin from "../screens/AppLogin";
 import AppHome from "../screens/AppHome";
@@ -102,27 +102,6 @@ const HomeScreens = (props) => (
       options={{
         title: "Add Invoice",
         headerShown: false,
-      }}
-    />
-    <HomeStack.Screen
-      name="AddShopScreen"
-      component={AppAddShop}
-      options={{
-        title: "New Shop",
-      }}
-    />
-    <HomeStack.Screen
-      name="AddEmployeeScreen"
-      component={AppAddEmployee}
-      options={{
-        title: "New Employee",
-      }}
-    />
-    <HomeStack.Screen
-      name="AddStockScreen"
-      component={AppAddStock}
-      options={{
-        title: "New Item",
       }}
     />
   </HomeStack.Navigator>

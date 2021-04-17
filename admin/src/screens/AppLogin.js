@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
   ScrollView,
   Dimensions,
   StatusBar,
@@ -77,9 +76,6 @@ function AppLogin(props) {
                 text="Login"
                 style={styles.button}
               />
-              <TouchableOpacity>
-                <Text style={styles.forget}>Forget Password?</Text>
-              </TouchableOpacity>
             </ScrollView>
           </AppForm>
         </View>

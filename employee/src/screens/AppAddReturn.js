@@ -27,65 +27,55 @@ const invoiceItems = [
     itemID: "#001",
     itemName: "Anonymous Item",
     unitPrice: "250",
-    stock: "20",
   },
   {
     itemID: "#002",
     itemName: "Anonymous Item",
     unitPrice: "250",
-    stock: "15",
   },
   {
     itemID: "#003",
     itemName: "Anonymous Item",
     unitPrice: "250",
-    stock: "10",
   },
   {
     itemID: "#004",
     itemName: "Anonymous Item",
     unitPrice: "250",
-    stock: "15",
   },
   {
     itemID: "#005",
     itemName: "Anonymous Item",
     unitPrice: "250",
-    stock: "25",
   },
   {
     itemID: "#006",
     itemName: "Anonymous Item",
     unitPrice: "250",
-    stock: "20",
   },
   {
     itemID: "#007",
     itemName: "Anonymous Item",
     unitPrice: "250",
-    stock: "15",
   },
   {
     itemID: "#008",
     itemName: "Anonymous Item",
     unitPrice: "250",
-    stock: "0",
   },
   {
     itemID: "#009",
     itemName: "Anonymous Item",
     unitPrice: "250",
-    stock: "15",
   },
   {
     itemID: "#010",
     itemName: "Anonymous Item",
     unitPrice: "250",
-    stock: "25",
   },
 ];
 
-function AppAddInvoice(props) {
+function AppAddReturn(props) {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [value, setValue] = React.useState("cash");
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -109,20 +99,8 @@ function AppAddInvoice(props) {
             justifyContent: "center",
           }}
         >
-          <Title style={{ marginHorizontal: "2%", fontSize: 16 }}>
-            Payment Method
-          </Title>
-          <ToggleButton.Row
-            onValueChange={(value) => setValue(value)}
-            value={value}
-          >
-            <ToggleButton icon="cash" value="cash"></ToggleButton>
-            <ToggleButton icon="credit-card" value="card"></ToggleButton>
-            <ToggleButton
-              icon="card-text-outline"
-              value="cheque"
-            ></ToggleButton>
-          </ToggleButton.Row>
+          <Title style={{ marginLeft: "5%", fontSize: 16 }}>Total: </Title>
+          <Text>Rs.{totalPrice}</Text>
         </View>
         <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />
         <View
@@ -132,12 +110,12 @@ function AppAddInvoice(props) {
             justifyContent: "center",
           }}
         >
-          <Title style={{ marginLeft: "5%", fontSize: 16 }}>Total: </Title>
+          <Title style={{ marginLeft: "5%", fontSize: 16 }}>New Total: </Title>
           <Text>Rs.{totalPrice}</Text>
         </View>
         <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />
         <IconButton
-          onPress={(values) => props.navigation.navigate("AddReturnScreen")}
+          onPress={(values) => props.navigation.navigate("HomeScreen")}
           icon="arrow-collapse-right"
           size={24}
           color={AppColors.primary}
@@ -149,7 +127,6 @@ function AppAddInvoice(props) {
           <DataTable.Title>Item</DataTable.Title>
           <DataTable.Title>Unit Price</DataTable.Title>
           <DataTable.Title>Quantity</DataTable.Title>
-          <DataTable.Title>Discount</DataTable.Title>
         </DataTable.Header>
         <DataTable.Row>
           <DataTable.Cell
@@ -165,7 +142,7 @@ function AppAddInvoice(props) {
               onPress={() => setModalVisible(true)}
             >
               <IconButton icon="plus" size={15} color={AppColors.primary} />
-              <Text style={{ color: AppColors.primary }}>Add New Item</Text>
+              <Text style={{ color: AppColors.primary }}>Add Item</Text>
             </TouchableOpacity>
           </DataTable.Cell>
         </DataTable.Row>
@@ -176,21 +153,20 @@ function AppAddInvoice(props) {
           renderItem={({ item }) => (
             <DataTable.Row>
               <DataTable.Cell>{item.itemName}</DataTable.Cell>
-              <DataTable.Cell>{item.unitPrice}</DataTable.Cell>
               <DataTable.Cell>
                 <TextInput
-                  placeholder={item.stock}
                   mode="outlined"
                   keyboardType="number-pad"
                   style={{
                     backgroundColor: AppColors.background,
                     height: 25,
                   }}
-                ></TextInput>
+                >
+                  {item.unitPrice}
+                </TextInput>
               </DataTable.Cell>
               <DataTable.Cell>
                 <TextInput
-                  placeholder="Rs."
                   mode="outlined"
                   keyboardType="number-pad"
                   style={{
@@ -236,49 +212,6 @@ function AppAddInvoice(props) {
                       style={{ marginRight: "2%" }}
                     />
                     <Title style={styles.title}>{item.itemName}</Title>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    {AppRenderIf(
-                      item.stock > 0,
-                      <Chip
-                        selectedColor={AppColors.green}
-                        style={{ margin: 10 }}
-                        icon="circle"
-                      >
-                        Available
-                      </Chip>
-                    )}
-                    {AppRenderIf(
-                      item.stock == 0,
-                      <Chip
-                        selectedColor={AppColors.red}
-                        style={{ margin: 10 }}
-                        icon="circle"
-                      >
-                        Unavailable
-                      </Chip>
-                    )}
-                    {AppRenderIf(
-                      10 < item.stock,
-                      <Chip style={{ marginRight: "3%" }}>
-                        Stock: {item.stock}
-                      </Chip>
-                    )}
-                    {AppRenderIf(
-                      10 >= item.stock,
-                      <Chip
-                        selectedColor={AppColors.orange}
-                        style={{ marginRight: "3%" }}
-                      >
-                        Stock: {item.stock} (Low)
-                      </Chip>
-                    )}
                     <Chip style={{ marginLeft: "3%" }}>
                       Rs.{item.unitPrice}
                     </Chip>
@@ -288,24 +221,12 @@ function AppAddInvoice(props) {
                   style={{ marginLeft: "2%", width: 1, height: "100%" }}
                 />
                 <View>
-                  {AppRenderIf(
-                    item.stock > 0,
-                    <IconButton
-                      icon="plus-circle"
-                      color={AppColors.primary}
-                      size={40}
-                      onPress={() => setModalVisible(false)}
-                    />
-                  )}
-                  {AppRenderIf(
-                    item.stock == 0,
-                    <IconButton
-                      icon="plus-circle"
-                      color={AppColors.primary}
-                      size={40}
-                      disabled
-                    />
-                  )}
+                  <IconButton
+                    icon="plus-circle"
+                    color={AppColors.primary}
+                    size={40}
+                    onPress={() => setModalVisible(false)}
+                  />
                 </View>
               </View>
             )}
@@ -316,7 +237,7 @@ function AppAddInvoice(props) {
   );
 }
 
-export default AppAddInvoice;
+export default AppAddReturn;
 
 const styles = StyleSheet.create({
   card: {

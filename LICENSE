@@ -19,3 +19,21 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+
+RN-POS is licensed under above MIT terms with an important addition:
+
+The footer signature "Software Troopers", hash and link to the original distribution of the code MUST BE RETAINED, MUST BE VISIBLE IN SPLASH SCREEN and CANNOT BE MODIFIED.
+
+Also worth noting:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+It's important to understand that although you are free to use the software the copyright stays and the license agreement applies in all cases. Therefore any actions like:
+
+    ~ Removing LICENSE and any license files is prohibited
+    ~ Authoring the footer notice replacing it with your own or even worse ~ claiming the copyright is absolutely prohibited
+    ~ Claiming full ownership of the code is prohibited
+
+In short you are free to use the software but you cannot claim any property on it.

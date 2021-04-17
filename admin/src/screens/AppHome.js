@@ -1,14 +1,6 @@
 import React from "react";
 import { View, FlatList, StyleSheet, StatusBar } from "react-native";
-import {
-  Button,
-  Avatar,
-  Title,
-  Caption,
-  FAB,
-  Portal,
-  Provider,
-} from "react-native-paper";
+import { Button, Avatar, Title, Caption, FAB } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
 
@@ -71,12 +63,6 @@ const invoices = [
 ];
 
 function AppHome(props) {
-  const [state, setState] = React.useState({ open: false });
-
-  const onStateChange = ({ open }) => setState({ open });
-
-  const { open } = state;
-
   return (
     <View>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
@@ -120,42 +106,11 @@ function AppHome(props) {
           </View>
         )}
       />
-      <Provider>
-        <Portal>
-          <FAB.Group
-            open={open}
-            icon={open ? "close" : "plus"}
-            actions={[
-              {
-                icon: "office-building",
-                label: "Shop",
-                onPress: () => props.navigation.navigate("AddShopScreen"),
-              },
-              {
-                icon: "package-variant",
-                label: "Stock",
-                onPress: () => props.navigation.navigate("AddStockScreen"),
-              },
-              {
-                icon: "file-document",
-                label: "Invoice",
-                onPress: () => props.navigation.navigate("AddInvoiceScreens"),
-              },
-              {
-                icon: "account-multiple",
-                label: "Employee",
-                onPress: () => props.navigation.navigate("AddEmployeeScreen"),
-                small: false,
-              },
-            ]}
-            onStateChange={onStateChange}
-            onPress={() => {
-              if (open) {
-              }
-            }}
-          />
-        </Portal>
-      </Provider>
+      <FAB
+        style={styles.fab}
+        icon="plus"
+        onPress={() => props.navigation.navigate("AddInvoiceScreens")}
+      />
     </View>
   );
 }

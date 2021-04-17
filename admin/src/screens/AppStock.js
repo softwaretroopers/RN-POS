@@ -7,6 +7,11 @@ import {
   Chip,
   IconButton,
   Divider,
+  Dialog,
+  Portal,
+  Paragraph,
+  Button,
+  Provider,
 } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
@@ -105,100 +110,122 @@ const stocks = [
 ];
 
 function AppStock(props) {
+  const [visible, setVisible] = React.useState(false);
+
+  const showConfirmation = () => setVisible(true);
+
+  const hideConfirmation = () => setVisible(false);
   return (
-    <View style={styles.screen}>
-      <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
-      <FlatList
-        data={stocks}
-        keyExtractor={(stock) => stock.itemID.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Avatar.Icon
-                  size={40}
-                  icon="package-variant"
-                  style={{ marginRight: "2%" }}
+    <Provider>
+      <View style={styles.screen}>
+        <StatusBar
+          backgroundColor={AppColors.primary}
+          barStyle="light-content"
+        />
+        <FlatList
+          data={stocks}
+          keyExtractor={(stock) => stock.itemID.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Avatar.Icon
+                    size={40}
+                    icon="package-variant"
+                    style={{ marginRight: "2%" }}
+                  />
+                  <Title style={styles.title}>
+                    {item.itemName} ({item.store})
+                  </Title>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  {AppRenderIf(
+                    item.availability,
+                    <Chip
+                      selectedColor={AppColors.green}
+                      style={{ margin: 10 }}
+                      icon="circle"
+                    >
+                      Available
+                    </Chip>
+                  )}
+                  {AppRenderIf(
+                    !item.availability,
+                    <Chip
+                      selectedColor={AppColors.red}
+                      style={{ margin: 10 }}
+                      icon="circle"
+                    >
+                      Unavailable
+                    </Chip>
+                  )}
+                  {AppRenderIf(
+                    10 < item.quantity,
+                    <Chip style={{ marginRight: "3%" }}>
+                      Qty: {item.quantity}
+                    </Chip>
+                  )}
+                  {AppRenderIf(
+                    10 >= item.quantity,
+                    <Chip
+                      selectedColor={AppColors.orange}
+                      style={{ marginRight: "3%" }}
+                    >
+                      Qty: {item.quantity} (Low)
+                    </Chip>
+                  )}
+                  <Chip style={{ marginLeft: "3%" }}>Rs.{item.unitPrice}</Chip>
+                </View>
+              </View>
+              <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />
+              <View>
+                <IconButton
+                  icon="delete"
+                  color={AppColors.red}
+                  size={20}
+                  onPress={showConfirmation}
                 />
-                <Title style={styles.title}>
-                  {item.itemName} ({item.store})
-                </Title>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {AppRenderIf(
-                  item.availability,
-                  <Chip
-                    selectedColor={AppColors.green}
-                    style={{ margin: 10 }}
-                    icon="circle"
-                  >
-                    Available
-                  </Chip>
-                )}
-                {AppRenderIf(
-                  !item.availability,
-                  <Chip
-                    selectedColor={AppColors.red}
-                    style={{ margin: 10 }}
-                    icon="circle"
-                  >
-                    Unavailable
-                  </Chip>
-                )}
-                {AppRenderIf(
-                  10 < item.quantity,
-                  <Chip style={{ marginRight: "3%" }}>
-                    Qty: {item.quantity}
-                  </Chip>
-                )}
-                {AppRenderIf(
-                  10 >= item.quantity,
-                  <Chip
-                    selectedColor={AppColors.orange}
-                    style={{ marginRight: "3%" }}
-                  >
-                    Qty: {item.quantity} (Low)
-                  </Chip>
-                )}
-                <Chip style={{ marginLeft: "3%" }}>Rs.{item.unitPrice}</Chip>
+                <IconButton
+                  icon="pen"
+                  color={AppColors.yellow}
+                  size={20}
+                  onPress={() => console.log("Pressed")}
+                />
               </View>
             </View>
-            <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />
-            <View>
-              <IconButton
-                icon="delete"
-                color={AppColors.red}
-                size={20}
-                onPress={() => console.log("Pressed")}
-              />
-              <IconButton
-                icon="pen"
-                color={AppColors.yellow}
-                size={20}
-                onPress={() => console.log("Pressed")}
-              />
-            </View>
-          </View>
-        )}
-      />
-      <FAB
-        style={styles.fab}
-        icon="plus"
-        onPress={() => props.navigation.navigate("AddStockScreen")}
-      />
-    </View>
+          )}
+        />
+        <FAB
+          style={styles.fab}
+          icon="plus"
+          onPress={() => props.navigation.navigate("AddStockScreen")}
+        />
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideConfirmation}>
+            <Dialog.Title>Confirmation</Dialog.Title>
+            <Dialog.Content>
+              <Paragraph>Are you sure you want to delete this item?</Paragraph>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideConfirmation}>No</Button>
+              <Button onPress={hideConfirmation}>Yes</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+      </View>
+    </Provider>
   );
 }
 
