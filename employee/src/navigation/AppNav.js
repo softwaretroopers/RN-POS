@@ -1,23 +1,22 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Button } from "react-native-paper";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AppLogin from "../screens/AppLogin";
 import AppHome from "../screens/AppHome";
 import AppStock from "../screens/AppStock";
+import AppShop from "../screens/AppShop";
 import AppProfile from "../screens/AppProfile";
 
-import AppDrawerContent from "./AppDrawerContent";
 import AppColors from "../configs/AppColors";
 import AppAddInvoice from "../screens/AppAddInvoice";
+import AppAddItems from "../screens/AppAddItems";
 import AppAddReturn from "../screens/AppAddReturn";
 
 const MainStack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
-const StockStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
 const InvoiceStack = createStackNavigator();
 
 const AppNav = () => (
@@ -39,25 +38,14 @@ const AppNav = () => (
       }}
     />
     <MainStack.Screen
-      name="DrawerNav"
-      component={DrawerNav}
+      name="HomeNav"
+      component={HomeNav}
       options={{ headerShown: false }}
     />
   </MainStack.Navigator>
 );
 
-const DrawerNav = () => (
-  <Drawer.Navigator
-    initialRouteName="HomeScreens"
-    drawerContent={(props) => <AppDrawerContent {...props} />}
-  >
-    <Drawer.Screen name="HomeScreens" component={HomeScreens} />
-    <Drawer.Screen name="StockScreens" component={StockScreens} />
-    <Drawer.Screen name="ProfileScreens" component={ProfileScreens} />
-  </Drawer.Navigator>
-);
-
-const HomeScreens = (props) => (
+const HomeNav = () => (
   <HomeStack.Navigator
     screenOptions={{
       headerStyle: { backgroundColor: AppColors.primary },
@@ -68,19 +56,9 @@ const HomeScreens = (props) => (
     }}
   >
     <HomeStack.Screen
-      name="HomeScreen"
-      component={AppHome}
-      options={{
-        title: "Invoices",
-        headerLeft: () => (
-          <Button
-            labelStyle={{ fontSize: 24 }}
-            icon="menu"
-            color={AppColors.background}
-            onPress={() => props.navigation.openDrawer()}
-          />
-        ),
-      }}
+      name="TabNav"
+      component={TabNav}
+      options={{ headerShown: false }}
     />
     <HomeStack.Screen
       name="AddInvoiceScreens"
@@ -91,6 +69,87 @@ const HomeScreens = (props) => (
       }}
     />
   </HomeStack.Navigator>
+);
+
+const TabNav = () => (
+  <Tab.Navigator
+    initialRouteName="HomeScreens"
+    activeColor={AppColors.background}
+    barStyle={{ backgroundColor: AppColors.primary }}
+  >
+    <Tab.Screen
+      name="HomeScreen"
+      component={AppHome}
+      options={{
+        title: "Home",
+        tabBarIcon: () => (
+          <MaterialCommunityIcons
+            name="home"
+            size={24}
+            color={AppColors.background}
+          />
+        ),
+      }}
+    />
+
+    <Tab.Screen
+      name="StockScreen"
+      component={AppStock}
+      options={{
+        title: "Stock",
+        tabBarIcon: () => (
+          <MaterialCommunityIcons
+            name="package-variant"
+            size={24}
+            color={AppColors.background}
+          />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="InvoiceScreen"
+      component={AppAddInvoice}
+      options={{
+        title: "Invoice",
+        tabBarIcon: () => (
+          <MaterialCommunityIcons
+            name="plus-circle"
+            size={24}
+            color={AppColors.background}
+          />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="ShopScreen"
+      component={AppShop}
+      options={{
+        title: "Shops",
+        tabBarIcon: () => (
+          <MaterialCommunityIcons
+            name="store"
+            size={24}
+            color={AppColors.background}
+          />
+        ),
+      }}
+    />
+
+    <Tab.Screen
+      name="ProfileScreen"
+      component={AppProfile}
+      options={{
+        title: "Profile",
+        tabBarIcon: () => (
+          <MaterialCommunityIcons
+            name="account"
+            size={24}
+            color={AppColors.background}
+          />
+        ),
+      }}
+    />
+  </Tab.Navigator>
 );
 
 const AddInvoiceScreens = (props) => (
@@ -104,8 +163,8 @@ const AddInvoiceScreens = (props) => (
     }}
   >
     <InvoiceStack.Screen
-      name="AddInvoiceScreen"
-      component={AppAddInvoice}
+      name="AddItemsScreen"
+      component={AppAddItems}
       options={{
         title: "New Invoice",
       }}
@@ -118,62 +177,6 @@ const AddInvoiceScreens = (props) => (
       }}
     />
   </InvoiceStack.Navigator>
-);
-
-const StockScreens = (props) => (
-  <StockStack.Navigator
-    screenOptions={{
-      headerStyle: { backgroundColor: AppColors.primary },
-      headerTintColor: AppColors.background,
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    }}
-  >
-    <StockStack.Screen
-      name="StockScreen"
-      component={AppStock}
-      options={{
-        title: "Stock",
-        headerLeft: () => (
-          <Button
-            labelStyle={{ fontSize: 24 }}
-            icon="menu"
-            color={AppColors.background}
-            onPress={() => props.navigation.openDrawer()}
-          />
-        ),
-      }}
-    />
-  </StockStack.Navigator>
-);
-
-const ProfileScreens = (props) => (
-  <ProfileStack.Navigator
-    screenOptions={{
-      headerStyle: { backgroundColor: AppColors.primary },
-      headerTintColor: AppColors.background,
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    }}
-  >
-    <ProfileStack.Screen
-      name="ProfileScreen"
-      component={AppProfile}
-      options={{
-        title: "Profile",
-        headerLeft: () => (
-          <Button
-            labelStyle={{ fontSize: 24 }}
-            icon="menu"
-            color={AppColors.background}
-            onPress={() => props.navigation.openDrawer()}
-          />
-        ),
-      }}
-    />
-  </ProfileStack.Navigator>
 );
 
 export default AppNav;

@@ -14,9 +14,9 @@ function AppPickerItem({ item, onPress }) {
           color: AppColors.black,
         }}
       >
-        {item.label}
+        {item.shopName}
       </Text>
-      <IconButton icon={item.icon} size={20} color={item.iconColor} />
+      <IconButton icon="store" size={20} />
     </TouchableOpacity>
   );
 }

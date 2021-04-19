@@ -34,7 +34,7 @@ function AppPicker({
             />
           )}
           {selectedItem ? (
-            <Text style={styles.text}>{selectedItem.label}</Text>
+            <Text style={styles.text}>{selectedItem.shopName}</Text>
           ) : (
             <Text style={styles.text}>{placeholder}</Text>
           )}
@@ -57,7 +57,7 @@ function AppPicker({
             contentContainerStyle={{}}
             data={items}
             numColumns={numberOfColumns}
-            keyExtractor={(item) => item.value.toString()}
+            keyExtractor={(item) => item.shopID.toString()}
             renderItem={({ item }) => (
               <AppPickerItem
                 item={item}

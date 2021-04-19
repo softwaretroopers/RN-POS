@@ -1,6 +1,6 @@
 import React from "react";
 import { View, FlatList, StyleSheet, StatusBar } from "react-native";
-import { Button, Avatar, Title, Caption, FAB } from "react-native-paper";
+import { Button, Avatar, Title, Caption } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
 import Invoices from "../database/Invoices";
@@ -49,11 +49,6 @@ function AppHome(props) {
           </View>
         )}
       />
-      <FAB
-        style={styles.fab}
-        icon="plus"
-        onPress={() => props.navigation.navigate("AddInvoiceScreens")}
-      />
     </View>
   );
 }
@@ -94,13 +89,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     margin: "1%",
     elevation: 10,
-  },
-  fab: {
-    position: "absolute",
-    margin: 16,
-    right: 0,
-    bottom: 0,
-    backgroundColor: AppColors.secondary,
   },
 });
 

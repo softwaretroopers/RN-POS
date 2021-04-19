@@ -1,274 +1,125 @@
 import React from "react";
 import {
-  View,
-  FlatList,
-  Modal,
-  TouchableOpacity,
   StyleSheet,
-} from "react-native";
-import {
-  DataTable,
-  IconButton,
-  TextInput,
-  Title,
+  View,
   Text,
-  ToggleButton,
-  Divider,
-  Searchbar,
-  Avatar,
-  Chip,
-} from "react-native-paper";
-import AppColors from "../configs/AppColors";
-import AppRenderIf from "../configs/AppRenderIf";
-import StockItems from "../database/StockItems";
+  ScrollView,
+  Dimensions,
+  StatusBar,
+} from "react-native";
+import { Caption, Title } from "react-native-paper";
+import * as Yup from "yup";
 
-const totalPrice = 10000;
+import { AppForm, AppSubmitButton, AppFormPicker } from "../components/forms";
+import AppColors from "../configs/AppColors";
+import Shops from "../database/Shops";
+
+const validationSchema = Yup.object().shape({
+  shop: Yup.string().min(3).label("Shop Name"),
+});
 
 function AppAddInvoice(props) {
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [value, setValue] = React.useState("cash");
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const onChangeSearch = (query) => setSearchQuery(query);
-
   return (
-    <View>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "1%",
-          margin: "1%",
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Title style={{ marginHorizontal: "2%", fontSize: 16 }}>
-            Payment Method
-          </Title>
-          <ToggleButton.Row
-            onValueChange={(value) => setValue(value)}
-            value={value}
-          >
-            <ToggleButton icon="cash" value="cash"></ToggleButton>
-            <ToggleButton icon="credit-card" value="card"></ToggleButton>
-            <ToggleButton
-              icon="card-text-outline"
-              value="cheque"
-            ></ToggleButton>
-          </ToggleButton.Row>
-        </View>
-        <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Title style={{ marginLeft: "5%", fontSize: 16 }}>Total: </Title>
-          <Text>Rs.{totalPrice}</Text>
-        </View>
-        <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />
-        <IconButton
-          onPress={(values) => props.navigation.navigate("AddReturnScreen")}
-          icon="arrow-collapse-right"
-          size={24}
-          color={AppColors.primary}
-        ></IconButton>
+    <View style={styles.container}>
+      <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
+      <View style={styles.header}>
+        <Text style={styles.text}>Enter Invoice Details</Text>
       </View>
-      <Divider />
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title>Item</DataTable.Title>
-          <DataTable.Title>Unit Price</DataTable.Title>
-          <DataTable.Title>Quantity</DataTable.Title>
-          <DataTable.Title>Discount</DataTable.Title>
-        </DataTable.Header>
-        <DataTable.Row>
-          <DataTable.Cell
-            style={{
-              justifyContent: "center",
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-              onPress={() => setModalVisible(true)}
-            >
-              <IconButton icon="plus" size={15} color={AppColors.primary} />
-              <Text style={{ color: AppColors.primary }}>Add New Item</Text>
-            </TouchableOpacity>
-          </DataTable.Cell>
-        </DataTable.Row>
-        <FlatList
-          style={{ marginBottom: "76%" }}
-          data={StockItems}
-          keyExtractor={(invoiceItem) => invoiceItem.itemID.toString()}
-          renderItem={({ item }) => (
-            <DataTable.Row>
-              <DataTable.Cell>{item.itemName}</DataTable.Cell>
-              <DataTable.Cell>{item.unitPrice}</DataTable.Cell>
-              <DataTable.Cell>
-                <TextInput
-                  placeholder={item.stock}
-                  mode="outlined"
-                  keyboardType="number-pad"
-                  style={{
-                    backgroundColor: AppColors.background,
-                    height: 25,
-                  }}
-                ></TextInput>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <TextInput
-                  placeholder="Rs."
-                  mode="outlined"
-                  keyboardType="number-pad"
-                  style={{
-                    backgroundColor: AppColors.background,
-                    height: 25,
-                  }}
-                ></TextInput>
-              </DataTable.Cell>
-            </DataTable.Row>
-          )}
-        />
-      </DataTable>
-      <Modal
-        visible={modalVisible}
-        animationType="fade"
-        onRequestClose={() => setModalVisible(false)}
-        onTouchCancel={() => setModalVisible(false)}
+      <View
+        style={[
+          styles.footer,
+          {
+            backgroundColor: AppColors.background,
+          },
+        ]}
       >
-        <View>
-          <Searchbar
-            placeholder="Search Items"
-            onChangeText={onChangeSearch}
-            value={searchQuery}
-          />
-          <FlatList
-            style={{ marginBottom: "11%" }}
-            contentContainerStyle={{}}
-            data={StockItems}
-            keyExtractor={(invoiceItem) => invoiceItem.itemID.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.card}>
-                <View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Avatar.Icon
-                      size={40}
-                      icon="package-variant"
-                      style={{ marginRight: "2%" }}
-                    />
-                    <Title style={styles.title}>{item.itemName}</Title>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    {AppRenderIf(
-                      item.stock > 0,
-                      <Chip
-                        selectedColor={AppColors.green}
-                        style={{ margin: 10 }}
-                        icon="circle"
-                      >
-                        Available
-                      </Chip>
-                    )}
-                    {AppRenderIf(
-                      item.stock == 0,
-                      <Chip
-                        selectedColor={AppColors.red}
-                        style={{ margin: 10 }}
-                        icon="circle"
-                      >
-                        Unavailable
-                      </Chip>
-                    )}
-                    {AppRenderIf(
-                      10 < item.stock,
-                      <Chip style={{ marginRight: "3%" }}>
-                        Stock: {item.stock}
-                      </Chip>
-                    )}
-                    {AppRenderIf(
-                      10 >= item.stock,
-                      <Chip
-                        selectedColor={AppColors.orange}
-                        style={{ marginRight: "3%" }}
-                      >
-                        Stock: {item.stock} (Low)
-                      </Chip>
-                    )}
-                    <Chip style={{ marginLeft: "3%" }}>
-                      Rs.{item.unitPrice}
-                    </Chip>
-                  </View>
-                </View>
-                <Divider
-                  style={{ marginLeft: "2%", width: 1, height: "100%" }}
-                />
-                <View>
-                  {AppRenderIf(
-                    item.stock > 0,
-                    <IconButton
-                      icon="plus-circle"
-                      color={AppColors.primary}
-                      size={40}
-                      onPress={() => setModalVisible(false)}
-                    />
-                  )}
-                  {AppRenderIf(
-                    item.stock == 0,
-                    <IconButton
-                      icon="plus-circle"
-                      color={AppColors.primary}
-                      size={40}
-                      disabled
-                    />
-                  )}
-                </View>
+        <View style={styles.innerFooter}>
+          <AppForm
+            initialValues={{ shop: "" }}
+            onSubmit={(values) =>
+              props.navigation.navigate("AddInvoiceScreens")
+            }
+            validationSchema={validationSchema}
+          >
+            <ScrollView>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  marginBottom: "3%",
+                }}
+              >
+                <Title style={{ fontSize: 18 }}>
+                  Invoice ID :{" "}
+                  <Caption style={{ fontSize: 18 }}>#011811</Caption>
+                </Title>
               </View>
-            )}
-          />
+              <AppFormPicker
+                items={Shops}
+                name="shop"
+                desc="Shop"
+                placeholderIcon="store"
+                placeholder="Shop"
+              />
+
+              <AppSubmitButton
+                color="primary"
+                mode="contained"
+                icon="check-circle"
+                text="Confirm"
+                style={styles.button}
+              />
+            </ScrollView>
+          </AppForm>
         </View>
-      </Modal>
+      </View>
     </View>
   );
 }
 
 export default AppAddInvoice;
 
+const { height } = Dimensions.get("screen");
+const height_logo = height * 0.15;
+
 const styles = StyleSheet.create({
-  card: {
+  container: {
+    flex: 1,
+    backgroundColor: AppColors.primary,
+  },
+  header: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: "3%",
-    paddingHorizontal: "5%",
-    marginHorizontal: "2%",
-    elevation: 10,
-    backgroundColor: AppColors.background,
-    margin: "1%",
-    borderRadius: 10,
-    flexDirection: "row",
   },
-  title: { fontSize: 16 },
+  footer: {
+    flex: 4,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingHorizontal: "5%",
+    justifyContent: "center",
+  },
+  innerFooter: { padding: "4%", marginTop: "5%" },
+  logo: {
+    width: height_logo,
+    height: height_logo,
+  },
+  button: {
+    padding: "4%",
+    marginTop: "5%",
+  },
+  forget: {
+    color: AppColors.primaryVariant,
+    fontSize: 16,
+    marginTop: "3%",
+    alignSelf: "center",
+  },
+  text: {
+    color: AppColors.background,
+    fontSize: 25,
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
 });

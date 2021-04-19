@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, StatusBar } from "react-native";
-import { Avatar, Title, Subheading, Caption } from "react-native-paper";
+import { Avatar, Title, Caption, Button } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
 
@@ -16,6 +16,15 @@ function AppProfile(props) {
           support@softwaretroopers.com
         </Caption>
         <Caption style={{ color: AppColors.background }}>+94717827878</Caption>
+        <Button
+          style={{ marginVertical: "5%" }}
+          mode="contained"
+          icon="logout"
+          color={AppColors.background}
+          onPress={() => props.navigation.popToTop()}
+        >
+          Logout
+        </Button>
       </View>
     </View>
   );

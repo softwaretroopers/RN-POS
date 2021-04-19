@@ -39,10 +39,10 @@ function AppLogin(props) {
       >
         <Text style={styles.text}>Welcome!</Text>
 
-        <View animation="pulse" style={styles.innerFooter}>
+        <View style={styles.innerFooter}>
           <AppForm
             initialValues={{ email: "", password: "" }}
-            onSubmit={(values) => props.navigation.navigate("DrawerNav")}
+            onSubmit={(values) => props.navigation.navigate("HomeNav")}
             validationSchema={validationSchema}
           >
             <ScrollView>
