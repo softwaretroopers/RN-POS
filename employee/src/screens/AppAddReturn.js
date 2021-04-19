@@ -19,65 +19,12 @@ import {
   Chip,
 } from "react-native-paper";
 import AppColors from "../configs/AppColors";
-import AppRenderIf from "../configs/AppRenderIf";
+import StockItems from "../database/StockItems";
 
 const totalPrice = 10000;
-const invoiceItems = [
-  {
-    itemID: "#001",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-  },
-  {
-    itemID: "#002",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-  },
-  {
-    itemID: "#003",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-  },
-  {
-    itemID: "#004",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-  },
-  {
-    itemID: "#005",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-  },
-  {
-    itemID: "#006",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-  },
-  {
-    itemID: "#007",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-  },
-  {
-    itemID: "#008",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-  },
-  {
-    itemID: "#009",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-  },
-  {
-    itemID: "#010",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-  },
-];
 
 function AppAddReturn(props) {
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [value, setValue] = React.useState("cash");
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
 
@@ -148,22 +95,21 @@ function AppAddReturn(props) {
         </DataTable.Row>
         <FlatList
           style={{ marginBottom: "76%" }}
-          data={invoiceItems}
+          data={StockItems}
           keyExtractor={(invoiceItem) => invoiceItem.itemID.toString()}
           renderItem={({ item }) => (
             <DataTable.Row>
               <DataTable.Cell>{item.itemName}</DataTable.Cell>
               <DataTable.Cell>
                 <TextInput
+                  placeholder={item.unitPrice}
                   mode="outlined"
                   keyboardType="number-pad"
                   style={{
                     backgroundColor: AppColors.background,
                     height: 25,
                   }}
-                >
-                  {item.unitPrice}
-                </TextInput>
+                ></TextInput>
               </DataTable.Cell>
               <DataTable.Cell>
                 <TextInput
@@ -194,7 +140,7 @@ function AppAddReturn(props) {
           <FlatList
             style={{ marginBottom: "11%" }}
             contentContainerStyle={{}}
-            data={invoiceItems}
+            data={StockItems}
             keyExtractor={(invoiceItem) => invoiceItem.itemID.toString()}
             renderItem={({ item }) => (
               <View style={styles.card}>

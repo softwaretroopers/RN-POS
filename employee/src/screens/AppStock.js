@@ -4,12 +4,13 @@ import { Avatar, Title, Chip } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
 import AppRenderIf from "../configs/AppRenderIf";
+import StockItems from "../database/StockItems";
 
 const stocks = [
   {
     itemID: "#001",
     itemName: "Anonymous Item",
-    quantity: "10",
+    stock: "10",
     unitPrice: "250",
 
     availability: true,
@@ -18,7 +19,7 @@ const stocks = [
   {
     itemID: "#002",
     itemName: "Anonymous Item",
-    quantity: "100",
+    stock: "100",
     unitPrice: "250",
 
     availability: true,
@@ -27,7 +28,7 @@ const stocks = [
   {
     itemID: "#003",
     itemName: "Anonymous Item",
-    quantity: "100",
+    stock: "100",
     unitPrice: "250",
 
     availability: true,
@@ -36,7 +37,7 @@ const stocks = [
   {
     itemID: "#004",
     itemName: "Anonymous Item",
-    quantity: "100",
+    stock: "100",
     unitPrice: "250",
 
     availability: true,
@@ -45,7 +46,7 @@ const stocks = [
   {
     itemID: "#005",
     itemName: "Anonymous Item",
-    quantity: "100",
+    stock: "100",
     unitPrice: "250",
 
     availability: true,
@@ -54,7 +55,7 @@ const stocks = [
   {
     itemID: "#006",
     itemName: "Anonymous Item",
-    quantity: "100",
+    stock: "100",
     unitPrice: "250",
 
     availability: true,
@@ -63,7 +64,7 @@ const stocks = [
   {
     itemID: "#007",
     itemName: "Anonymous Item",
-    quantity: "100",
+    stock: "100",
     unitPrice: "250",
 
     availability: true,
@@ -72,7 +73,7 @@ const stocks = [
   {
     itemID: "#008",
     itemName: "Anonymous Item",
-    quantity: "100",
+    stock: "100",
     unitPrice: "250",
 
     availability: true,
@@ -81,7 +82,7 @@ const stocks = [
   {
     itemID: "#009",
     itemName: "Anonymous Item",
-    quantity: "100",
+    stock: "100",
     unitPrice: "250",
 
     availability: true,
@@ -90,7 +91,7 @@ const stocks = [
   {
     itemID: "#010",
     itemName: "Anonymous Item",
-    quantity: "100",
+    stock: "100",
     unitPrice: "250",
 
     availability: true,
@@ -103,7 +104,7 @@ function AppStock(props) {
     <View style={styles.screen}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <FlatList
-        data={stocks}
+        data={StockItems}
         keyExtractor={(stock) => stock.itemID.toString()}
         renderItem={({ item }) => (
           <View style={styles.card}>
@@ -152,18 +153,16 @@ function AppStock(props) {
                   </Chip>
                 )}
                 {AppRenderIf(
-                  10 < item.quantity,
-                  <Chip style={{ marginRight: "3%" }}>
-                    Qty: {item.quantity}
-                  </Chip>
+                  10 < item.stock,
+                  <Chip style={{ marginRight: "3%" }}>Qty: {item.stock}</Chip>
                 )}
                 {AppRenderIf(
-                  10 >= item.quantity,
+                  10 >= item.stock,
                   <Chip
                     selectedColor={AppColors.orange}
                     style={{ marginRight: "3%" }}
                   >
-                    Qty: {item.quantity} (Low)
+                    Qty: {item.stock} (Low)
                   </Chip>
                 )}
                 <Chip style={{ marginLeft: "3%" }}>Rs.{item.unitPrice}</Chip>

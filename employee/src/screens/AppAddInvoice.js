@@ -20,70 +20,9 @@ import {
 } from "react-native-paper";
 import AppColors from "../configs/AppColors";
 import AppRenderIf from "../configs/AppRenderIf";
+import StockItems from "../database/StockItems";
 
 const totalPrice = 10000;
-const invoiceItems = [
-  {
-    itemID: "#001",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-    stock: "20",
-  },
-  {
-    itemID: "#002",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-    stock: "15",
-  },
-  {
-    itemID: "#003",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-    stock: "10",
-  },
-  {
-    itemID: "#004",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-    stock: "15",
-  },
-  {
-    itemID: "#005",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-    stock: "25",
-  },
-  {
-    itemID: "#006",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-    stock: "20",
-  },
-  {
-    itemID: "#007",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-    stock: "15",
-  },
-  {
-    itemID: "#008",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-    stock: "0",
-  },
-  {
-    itemID: "#009",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-    stock: "15",
-  },
-  {
-    itemID: "#010",
-    itemName: "Anonymous Item",
-    unitPrice: "250",
-    stock: "25",
-  },
-];
 
 function AppAddInvoice(props) {
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -171,7 +110,7 @@ function AppAddInvoice(props) {
         </DataTable.Row>
         <FlatList
           style={{ marginBottom: "76%" }}
-          data={invoiceItems}
+          data={StockItems}
           keyExtractor={(invoiceItem) => invoiceItem.itemID.toString()}
           renderItem={({ item }) => (
             <DataTable.Row>
@@ -218,7 +157,7 @@ function AppAddInvoice(props) {
           <FlatList
             style={{ marginBottom: "11%" }}
             contentContainerStyle={{}}
-            data={invoiceItems}
+            data={StockItems}
             keyExtractor={(invoiceItem) => invoiceItem.itemID.toString()}
             renderItem={({ item }) => (
               <View style={styles.card}>
