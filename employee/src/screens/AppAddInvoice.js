@@ -15,7 +15,7 @@ import AppColors from "../configs/AppColors";
 import Shops from "../database/Shops";
 
 const validationSchema = Yup.object().shape({
-  shop: Yup.string().min(3).label("Shop Name"),
+  shop: Yup.object().required().label("Shop Name"),
 });
 
 function AppAddInvoice(props) {
@@ -35,7 +35,7 @@ function AppAddInvoice(props) {
       >
         <View style={styles.innerFooter}>
           <AppForm
-            initialValues={{ shop: "" }}
+            initialValues={{ shop: [0] }}
             onSubmit={(values) =>
               props.navigation.navigate("AddInvoiceScreens")
             }
@@ -51,7 +51,7 @@ function AppAddInvoice(props) {
                 }}
               >
                 <Title style={{ fontSize: 18 }}>
-                  Invoice ID :{" "}
+                  Invoice ID :
                   <Caption style={{ fontSize: 18 }}>#011811</Caption>
                 </Title>
               </View>

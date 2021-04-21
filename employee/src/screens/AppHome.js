@@ -1,11 +1,12 @@
 import React from "react";
-import { View, FlatList, StyleSheet, StatusBar } from "react-native";
+import { View, FlatList, StyleSheet, StatusBar, Modal } from "react-native";
 import { Button, Avatar, Title, Caption } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
 import Invoices from "../database/Invoices";
 
 function AppHome(props) {
+  const [modalVisible, setModalVisible] = React.useState(false);
   return (
     <View>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
@@ -42,10 +43,56 @@ function AppHome(props) {
                   <Caption style={styles.caption}>{item.date}</Caption>
                 </View>
               </View>
-              <Button color={AppColors.primary} icon="eye">
+              <Button
+                onPress={() => setModalVisible(true)}
+                color={AppColors.primary}
+                icon="eye"
+              >
                 View
               </Button>
             </View>
+
+            <Modal
+              visible={modalVisible}
+              animationType="fade"
+              onRequestClose={() => setModalVisible(false)}
+              onTouchCancel={() => setModalVisible(false)}
+            >
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                    marginTop: "2%",
+                  }}
+                >
+                  <Button
+                    color={AppColors.primary}
+                    icon="close-circle"
+                    onPress={() => setModalVisible(false)}
+                    mode="contained"
+                  >
+                    Close
+                  </Button>
+                  <Button
+                    color={AppColors.primary}
+                    icon="printer"
+                    onPress={() => setModalVisible(false)}
+                    mode="contained"
+                  >
+                    Print
+                  </Button>
+                </View>
+
+                <FlatList
+                  style={{ marginBottom: "11%" }}
+                  contentContainerStyle={{}}
+                  data={Invoices}
+                  keyExtractor={(invoice) => invoice.invoiceID.toString()}
+                  renderItem={({ item }) => <View style={styles.card}></View>}
+                />
+              </View>
+            </Modal>
           </View>
         )}
       />
