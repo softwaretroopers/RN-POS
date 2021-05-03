@@ -7,7 +7,6 @@ import AppLogin from "../screens/AppLogin";
 import AppHome from "../screens/AppHome";
 import AppStock from "../screens/AppStock";
 import AppShop from "../screens/AppShop";
-import AppInvoice from "../screens/AppInvoice";
 import AppProfile from "../screens/AppProfile";
 
 import AppColors from "../configs/AppColors";
@@ -64,14 +63,6 @@ const HomeNav = () => (
     <HomeStack.Screen
       name="AddInvoiceScreens"
       component={AddInvoiceScreens}
-      options={{
-        title: "Add Invoice",
-        headerShown: false,
-      }}
-    />
-    <HomeStack.Screen
-      name="ViewInvoice"
-      component={AppInvoice}
       options={{
         title: "Add Invoice",
         headerShown: false,
