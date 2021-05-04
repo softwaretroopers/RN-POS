@@ -1,21 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StatusBar, FlatList, StyleSheet } from "react-native";
 import { Avatar, Title, Caption } from "react-native-paper";
+import { firebase } from "../database/config";
 
 import AppColors from "../configs/AppColors";
-import Shops from "../database/Shops";
+//import Shops from "../database/Shops";
 
 function AppShop(props) {
+  const [shops, setShops] = useState([]);
+
+  const shopRef = firebase.firestore().collection("shops");
+
+  useEffect(() => {
+    shopRef.onSnapshot(
+      (querySnapshot) => {
+        const newShops = [];
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          newShops.push(shop);
+        });
+        setShops(newShops);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
   return (
     <View style={styles.screen}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <FlatList
-        data={Shops}
+        data={shops}
         keyExtractor={(shop) => shop.shopID.toString()}
         renderItem={({ item }) => (
           <View style={styles.card}>
             <Avatar.Icon size={40} icon="office-building" />
-            <Title style={styles.title}>{item.shopName}</Title>
+            <Title style={styles.title}>{item.name}</Title>
             <Caption>Category: {item.category}</Caption>
           </View>
         )}

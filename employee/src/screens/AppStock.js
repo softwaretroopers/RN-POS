@@ -1,105 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StatusBar, FlatList, StyleSheet } from "react-native";
 import { Avatar, Title, Chip } from "react-native-paper";
+import { firebase } from "../database/config";
 
 import AppColors from "../configs/AppColors";
 import AppRenderIf from "../configs/AppRenderIf";
-import StockItems from "../database/StockItems";
-
-const stocks = [
-  {
-    itemID: "#001",
-    itemName: "Anonymous Item",
-    stock: "10",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#002",
-    itemName: "Anonymous Item",
-    stock: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#003",
-    itemName: "Anonymous Item",
-    stock: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#004",
-    itemName: "Anonymous Item",
-    stock: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kelaniya",
-  },
-  {
-    itemID: "#005",
-    itemName: "Anonymous Item",
-    stock: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kelaniya",
-  },
-  {
-    itemID: "#006",
-    itemName: "Anonymous Item",
-    stock: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#007",
-    itemName: "Anonymous Item",
-    stock: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kelaniya",
-  },
-  {
-    itemID: "#008",
-    itemName: "Anonymous Item",
-    stock: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#009",
-    itemName: "Anonymous Item",
-    stock: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#010",
-    itemName: "Anonymous Item",
-    stock: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kelaniya",
-  },
-];
 
 function AppStock(props) {
+  const [StockItems, setStockItems] = useState([]);
+
+  const stockRef = firebase.firestore().collection("stockItems");
+
+  useEffect(() => {
+    stockRef.onSnapshot(
+      (querySnapshot) => {
+        const newStock = [];
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          newStock.push(shop);
+        });
+        setStockItems(newStock);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
   return (
     <View style={styles.screen}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
@@ -133,23 +61,23 @@ function AppStock(props) {
                 }}
               >
                 {AppRenderIf(
-                  item.availability,
-                  <Chip
-                    selectedColor={AppColors.green}
-                    style={{ margin: 10 }}
-                    icon="circle"
-                  >
-                    Available
-                  </Chip>
-                )}
-                {AppRenderIf(
-                  !item.availability,
+                  0 == item.stock,
                   <Chip
                     selectedColor={AppColors.red}
                     style={{ margin: 10 }}
                     icon="circle"
                   >
                     Unavailable
+                  </Chip>
+                )}
+                {AppRenderIf(
+                  !0 == item.stock,
+                  <Chip
+                    selectedColor={AppColors.green}
+                    style={{ margin: 10 }}
+                    icon="circle"
+                  >
+                    Available
                   </Chip>
                 )}
                 {AppRenderIf(

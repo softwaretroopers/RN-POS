@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 
 import AppLogin from "../screens/AppLogin";
 import AppHome from "../screens/AppHome";
@@ -13,6 +13,7 @@ import AppColors from "../configs/AppColors";
 import AppAddInvoice from "../screens/AppAddInvoice";
 import AppAddItems from "../screens/AppAddItems";
 import AppAddReturn from "../screens/AppAddReturn";
+import AppRegister from "../screens/AppRegister";
 
 const MainStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -139,10 +140,10 @@ const TabNav = () => (
       name="ProfileScreen"
       component={AppProfile}
       options={{
-        title: "Profile",
+        title: "Settings",
         tabBarIcon: () => (
-          <MaterialCommunityIcons
-            name="account"
+          <Ionicons
+            name="settings-sharp"
             size={24}
             color={AppColors.background}
           />

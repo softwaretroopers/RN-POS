@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "POS System - Employee",
-    "slug": "RN-POS-EMP",
+    "name": "Po(S)T - Employee",
+    "slug": "Post-emp",
     "owner": "softwaretroopers",
     "version": "Test-1.0.0",
     "orientation": "portrait",
@@ -17,10 +17,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.softwaretroopers.pos"
+      "bundleIdentifier": "com.softwaretroopers.post"
     },
     "android": {
-      "package": "com.softwaretroopers.pos",
+      "package": "com.softwaretroopers.post",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

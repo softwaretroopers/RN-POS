@@ -1,21 +1,42 @@
-import React from "react";
-import { View, StyleSheet, StatusBar } from "react-native";
-import { Avatar, Title, Caption, Button } from "react-native-paper";
+import React, { useCallback } from "react";
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  TouchableHighlight,
+  Linking,
+} from "react-native";
+import { Avatar, Title, Caption, Button, Chip } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
 
 function AppProfile(props) {
+  const handlePress = useCallback(async () => {
+    // Open the custom settings if the app has one
+    await Linking.openURL("tel:+94717827878");
+  }, []);
+  const handleEmailPress = useCallback(async () => {
+    // Open the custom settings if the app has one
+    await Linking.openURL("mailto: support@expo.io");
+  }, []);
   return (
     <View>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <View style={styles.accountTop}>
         <Avatar.Icon size={100} icon="account" />
-        <Title style={{ color: AppColors.background }}>Mr. Anonymous</Title>
+        <View style={{ flexDirection: "row" }}>
+          <Chip style={{ margin: "3%" }} icon="phone" onPress={handlePress}>
+            Contact Us
+          </Chip>
+          <Chip
+            style={{ margin: "3%" }}
+            icon="email"
+            onPress={handleEmailPress}
+          >
+            Email Us
+          </Chip>
+        </View>
 
-        <Caption style={{ color: AppColors.background }}>
-          support@softwaretroopers.com
-        </Caption>
-        <Caption style={{ color: AppColors.background }}>+94717827878</Caption>
         <Button
           style={{ marginVertical: "5%" }}
           mode="contained"

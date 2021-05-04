@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   FlatList,
@@ -21,6 +21,7 @@ import {
 import AppColors from "../configs/AppColors";
 import AppRenderIf from "../configs/AppRenderIf";
 import StockItems from "../database/StockItems";
+import { firebase } from "../database/config";
 
 const totalPrice = 10000;
 
@@ -29,6 +30,71 @@ function AppAddItems(props) {
   const [value, setValue] = React.useState("cash");
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
+  const [entityText, setEntityText] = useState("");
+  const [entities, setEntities] = useState([]);
+
+  const [StockInvItems, setStockInvItems] = useState([]);
+  const stockInvRef = firebase.firestore().collection("stockItems");
+
+  useEffect(() => {
+    stockInvRef.onSnapshot(
+      (querySnapshot) => {
+        const newStockInv = [];
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          newStockInv.push(shop);
+        });
+        setStockInvItems(newStockInv);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+  // const renderEntity = ({ item }) => {
+  //   return <Text>{item.text}</Text>;
+  // };
+
+  //add stock to invoice
+  const stockInvRefAdd = firebase.firestore().collection("invoicesAddStocks");
+  const [StockInvItemAdd, setStockInvItemAdd] = useState([]);
+  //stock add
+  useEffect(() => {
+    stockInvRefAdd.onSnapshot(
+      (querySnapshot) => {
+        const newStockInv = [];
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          newStockInv.push(shop);
+        });
+        setStockInvItemAdd(newStockInv);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+  const onAddButtonPress = () => {
+    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+    const data = {
+      quantity: "12",
+      stockID: "NbJRN6cOBwJ4Z2wBm0J4",
+      createdAt: timestamp,
+    };
+    stockInvRefAdd
+      .add(data)
+      .then((_doc) => {
+        setEntityText("");
+        Keyboard.dismiss();
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
 
   return (
     <View>
@@ -157,8 +223,8 @@ function AppAddItems(props) {
           <FlatList
             style={{ marginBottom: "11%" }}
             contentContainerStyle={{}}
-            data={StockItems}
-            keyExtractor={(invoiceItem) => invoiceItem.itemID.toString()}
+            data={StockInvItems}
+            keyExtractor={(stock) => stock.itemID.toString()}
             renderItem={({ item }) => (
               <View style={styles.card}>
                 <View>
@@ -233,7 +299,7 @@ function AppAddItems(props) {
                       icon="plus-circle"
                       color={AppColors.primary}
                       size={40}
-                      onPress={() => setModalVisible(false)}
+                      onPress={onAddButtonPress}
                     />
                   )}
                   {AppRenderIf(
@@ -241,6 +307,7 @@ function AppAddItems(props) {
                     <IconButton
                       icon="plus-circle"
                       color={AppColors.primary}
+                      value={item.itemName}
                       size={40}
                       disabled
                     />

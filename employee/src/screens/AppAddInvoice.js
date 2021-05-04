@@ -1,29 +1,54 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
   Text,
-  ScrollView,
   Dimensions,
   StatusBar,
+  FlatList,
+  TouchableHighlight,
 } from "react-native";
-import { Caption, Title } from "react-native-paper";
-import * as Yup from "yup";
+import { Caption, Title, Button, Avatar } from "react-native-paper";
+import { firebase } from "../database/config";
 
-import { AppForm, AppSubmitButton, AppFormPicker } from "../components/forms";
 import AppColors from "../configs/AppColors";
-import Shops from "../database/Shops";
-
-const validationSchema = Yup.object().shape({
-  shop: Yup.object().required().label("Shop Name"),
-});
 
 function AppAddInvoice(props) {
+  const [shops, setShops] = useState([]);
+
+  const shopRef = firebase.firestore().collection("shops");
+
+  useEffect(() => {
+    shopRef.onSnapshot(
+      (querySnapshot) => {
+        const newShops = [];
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          newShops.push(shop);
+        });
+        setShops(newShops);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <View style={styles.header}>
         <Text style={styles.text}>Enter Invoice Details</Text>
+        <Button
+          mode="contained"
+          icon="check-circle"
+          color={AppColors.background}
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
+          onPress={(values) => props.navigation.navigate("AddInvoiceScreens")}
+        >
+          Select
+        </Button>
       </View>
       <View
         style={[
@@ -33,45 +58,19 @@ function AppAddInvoice(props) {
           },
         ]}
       >
-        <View style={styles.innerFooter}>
-          <AppForm
-            initialValues={{ shop: [0] }}
-            onSubmit={(values) =>
-              props.navigation.navigate("AddInvoiceScreens")
-            }
-            validationSchema={validationSchema}
-          >
-            <ScrollView>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  marginBottom: "3%",
-                }}
-              >
-                <Title style={{ fontSize: 18 }}>
-                  Invoice ID :
-                  <Caption style={{ fontSize: 18 }}>#011811</Caption>
-                </Title>
-              </View>
-              <AppFormPicker
-                items={Shops}
-                name="shop"
-                desc="Shop"
-                placeholderIcon="store"
-                placeholder="Shop"
-              />
-
-              <AppSubmitButton
-                color="primary"
-                mode="contained"
-                icon="check-circle"
-                text="Confirm"
-                style={styles.button}
-              />
-            </ScrollView>
-          </AppForm>
+        <View>
+          <FlatList
+            data={shops}
+            keyExtractor={(shop) => shop.shopID.toString()}
+            renderItem={({ item }) => (
+              <TouchableHighlight>
+                <View style={styles.card}>
+                  <Avatar.Icon size={40} icon="store" />
+                  <Title style={styles.title}>{item.name}</Title>
+                </View>
+              </TouchableHighlight>
+            )}
+          />
         </View>
       </View>
     </View>
@@ -92,6 +91,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  card: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: "3%",
+    paddingHorizontal: "5%",
+    elevation: 10,
+    backgroundColor: AppColors.background,
+    margin: "1%",
+    borderRadius: 10,
+    width: "60%",
+    alignSelf: "center",
   },
   footer: {
     flex: 4,
