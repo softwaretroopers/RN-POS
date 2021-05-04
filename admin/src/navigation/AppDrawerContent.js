@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { Avatar, Title, Caption, Drawer, Divider } from "react-native-paper";
+import { firebase } from "../firebase/Config";
 
 function AppDrawerContent(props) {
   return (
@@ -67,7 +68,19 @@ function AppDrawerContent(props) {
       <Drawer.Section style={styles.bottomDrawerSection}>
         <Drawer.Item
           label="Logout"
-          onPress={() => props.navigation.popToTop()}
+          onPress={() => {
+            firebase
+              .auth()
+              .signOut()
+              .then(
+                () => {
+                  props.navigation.navigate("LoginScreen");
+                },
+                function (error) {
+                  // An error happened.
+                }
+              );
+          }}
           icon="logout"
         />
       </Drawer.Section>

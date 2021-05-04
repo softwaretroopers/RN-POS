@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,19 +7,48 @@ import {
   Dimensions,
   StatusBar,
 } from "react-native";
-import * as Yup from "yup";
-
-import { AppForm, AppFormInput, AppSubmitButton } from "../components/forms";
+import { firebase } from "../firebase/Config";
+import { TextInput, Button } from "react-native-paper";
 import AppColors from "../configs/AppColors";
 
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email().required().min(3).label("Email Address"),
-  password: Yup.string().required().min(8).label("Password"),
-  fName: Yup.string().required().min(3).label("Full Name"),
-  mNumber: Yup.string().required().min(10).label("Mobile Number"),
-});
-
 function AppAddEmployee(props) {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const onRegisterPress = () => {
+    if (password !== confirmPassword) {
+      alert("Passwords don't match.");
+      return;
+    }
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((response) => {
+        const uid = response.user.uid;
+        const data = {
+          id: uid,
+          email,
+          fullName,
+        };
+
+        const usersRef = firebase.firestore().collection("users");
+        usersRef
+          .doc(uid)
+          .set(data)
+          .then(() => {
+            props.navigation.goBack();
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
@@ -35,65 +64,51 @@ function AppAddEmployee(props) {
         ]}
       >
         <View style={styles.innerFooter}>
-          <AppForm
-            initialValues={{ email: "", password: "" }}
-            onSubmit={(values) => props.navigation.goBack()}
-            validationSchema={validationSchema}
+          <TextInput
+            placeholder="Full Name"
+            onChangeText={(text) => setFullName(text)}
+            value={fullName}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+          />
+          <TextInput
+            placeholder="E-mail"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+          />
+          <TextInput
+            secureTextEntry
+            placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+          />
+          <TextInput
+            secureTextEntry
+            placeholder="Confirm Password"
+            onChangeText={(text) => setConfirmPassword(text)}
+            value={confirmPassword}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+          />
+
+          <Button
+            mode="contained"
+            icon="check-circle"
+            style={styles.button}
+            onPress={() => onRegisterPress()}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
           >
-            <ScrollView>
-              <AppFormInput
-                autoCapitalize="words"
-                autoCorrect={false}
-                icon="account"
-                label="Full Name"
-                placeholder="Enter the Full Name"
-                name="fName"
-                textContentType="name"
-                mode="outlined"
-              />
-
-              <AppFormInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                icon="email"
-                name="email"
-                label="Email Address"
-                placeholder="Enter the Email Address"
-                textContentType="emailAddress"
-                mode="outlined"
-              />
-              <AppFormInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                icon="cellphone-android"
-                label="Mobile Number"
-                placeholder="Enter the Mobile Number"
-                name="mNumber"
-                textContentType="telephoneNumber"
-                mode="outlined"
-                axLength={10}
-              />
-              <AppFormInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                icon="lock"
-                label="Password"
-                placeholder="Enter Your Password"
-                name="password"
-                secureTextEntry
-                textContentType="password"
-                mode="outlined"
-              />
-
-              <AppSubmitButton
-                color="primary"
-                mode="contained"
-                icon="check-circle"
-                text="Submit"
-                style={styles.button}
-              />
-            </ScrollView>
-          </AppForm>
+            Login
+          </Button>
         </View>
       </View>
     </View>

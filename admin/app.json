@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "POS System",
-    "slug": "RN-POS",
+    "name": "Po(S)T Admin",
+    "slug": "Post-admin",
     "owner": "softwaretroopers",
     "version": "Test-1.0.0",
     "orientation": "portrait",
@@ -17,10 +17,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.softwaretroopers.pos"
+      "bundleIdentifier": "com.softwaretroopers.postadmin"
     },
     "android": {
-      "package": "com.softwaretroopers.pos",
+      "package": "com.softwaretroopers.postadmin",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

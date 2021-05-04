@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StatusBar, FlatList, StyleSheet } from "react-native";
 import {
   Avatar,
@@ -12,61 +12,9 @@ import {
   Paragraph,
   Button,
 } from "react-native-paper";
+import { firebase } from "../firebase/Config";
 
 import AppColors from "../configs/AppColors";
-
-const shops = [
-  {
-    shopID: "#001",
-    shopName: "Anonymous Shop",
-    category: "A",
-  },
-  {
-    shopID: "#002",
-    shopName: "Anonymous Shop",
-    category: "A",
-  },
-  {
-    shopID: "#003",
-    shopName: "Anonymous Shop",
-    category: "A",
-  },
-  {
-    shopID: "#004",
-    shopName: "Anonymous Shop",
-    category: "A",
-  },
-  {
-    shopID: "#005",
-    shopName: "Anonymous Shop",
-    category: "A",
-  },
-  {
-    shopID: "#006",
-    shopName: "Anonymous Shop",
-    category: "A",
-  },
-  {
-    shopID: "#007",
-    shopName: "Anonymous Shop",
-    category: "A",
-  },
-  {
-    shopID: "#008",
-    shopName: "Anonymous Shop",
-    category: "A",
-  },
-  {
-    shopID: "#009",
-    shopName: "Anonymous Shop",
-    category: "A",
-  },
-  {
-    shopID: "#010",
-    shopName: "Anonymous Shop",
-    category: "A",
-  },
-];
 
 function AppShop(props) {
   const [visible, setVisible] = React.useState(false);
@@ -74,6 +22,28 @@ function AppShop(props) {
   const showConfirmation = () => setVisible(true);
 
   const hideConfirmation = () => setVisible(false);
+
+  const [shops, setShops] = useState([]);
+
+  const shopRef = firebase.firestore().collection("shops");
+
+  useEffect(() => {
+    shopRef.onSnapshot(
+      (querySnapshot) => {
+        const newShops = [];
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          newShops.push(shop);
+        });
+        setShops(newShops);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
   return (
     <Provider>
       <View style={styles.screen}>
@@ -83,11 +53,11 @@ function AppShop(props) {
         />
         <FlatList
           data={shops}
-          keyExtractor={(shop) => shop.shopID.toString()}
+          keyExtractor={(shop) => shop.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.card}>
               <Avatar.Icon size={40} icon="office-building" />
-              <Title style={styles.title}>{item.shopName}</Title>
+              <Title style={styles.title}>{item.name}</Title>
               <Caption>Category: {item.category}</Caption>
               <View style={{ flexDirection: "row" }}>
                 <IconButton

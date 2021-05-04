@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StatusBar, FlatList, StyleSheet } from "react-native";
 import {
   Avatar,
@@ -12,6 +12,7 @@ import {
   Paragraph,
   Button,
 } from "react-native-paper";
+import { firebase } from "../firebase/Config";
 
 import AppColors from "../configs/AppColors";
 
@@ -34,6 +35,28 @@ function AppStore(props) {
   const showConfirmation = () => setVisible(true);
 
   const hideConfirmation = () => setVisible(false);
+
+  const [stores, setStores] = useState([]);
+
+  const storeRef = firebase.firestore().collection("stores");
+
+  useEffect(() => {
+    storeRef.onSnapshot(
+      (querySnapshot) => {
+        const newStores = [];
+        querySnapshot.forEach((doc) => {
+          const store = doc.data();
+          store.id = doc.id;
+          newStores.push(store);
+        });
+        setStores(newStores);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
   return (
     <Provider>
       <View style={styles.screen}>
@@ -43,11 +66,11 @@ function AppStore(props) {
         />
         <FlatList
           data={stores}
-          keyExtractor={(store) => store.storeID.toString()}
+          keyExtractor={(store) => store.id}
           renderItem={({ item }) => (
             <View style={styles.card}>
               <Avatar.Icon size={40} icon="store" />
-              <Title style={styles.title}>{item.storeName}</Title>
+              <Title style={styles.title}>{item.name}</Title>
               <Caption>{item.supervisor}</Caption>
               <View style={{ flexDirection: "row" }}>
                 <IconButton

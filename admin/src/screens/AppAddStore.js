@@ -1,23 +1,36 @@
-import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  Dimensions,
-  StatusBar,
-} from "react-native";
-import * as Yup from "yup";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Dimensions, StatusBar } from "react-native";
+import { Caption, ToggleButton, Button, TextInput } from "react-native-paper";
+import { firebase } from "../firebase/Config";
 
-import { AppForm, AppFormInput, AppSubmitButton } from "../components/forms";
 import AppColors from "../configs/AppColors";
 
-const validationSchema = Yup.object().shape({
-  stName: Yup.string().required().min(3).label("Store Name"),
-  supName: Yup.string().min(3).label("Owner's Name"),
-});
-
 function AppAddStore(props) {
+  const [supervisor, setSupervisor] = useState("");
+
+  const [entityText, setEntityText] = useState("");
+
+  const entityRef = firebase.firestore().collection("stores");
+
+  const onAddButtonPress = () => {
+    if (entityText && entityText.length > 0) {
+      const data = {
+        name: entityText,
+        supervisor: supervisor,
+        id,
+      };
+      entityRef
+        .add(data)
+        .then((_doc) => {
+          setEntityText("");
+          props.navigation.goBack();
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
@@ -33,42 +46,33 @@ function AppAddStore(props) {
         ]}
       >
         <View style={styles.innerFooter}>
-          <AppForm
-            initialValues={{ email: "", password: "" }}
-            onSubmit={(values) => props.navigation.goBack()}
-            validationSchema={validationSchema}
-          >
-            <ScrollView>
-              <AppFormInput
-                autoCapitalize="words"
-                autoCorrect={false}
-                icon="store"
-                label="Store Location"
-                placeholder="Enter the Store Location"
-                name="stName"
-                textContentType="name"
-                mode="outlined"
-              />
-              <AppFormInput
-                autoCapitalize="words"
-                autoCorrect={false}
-                icon="account"
-                label="Supervisor"
-                placeholder="Enter the Supervisor's Name"
-                name="supName"
-                textContentType="name"
-                mode="outlined"
-              />
+          <TextInput
+            placeholder="Store Name"
+            onChangeText={(text) => setEntityText(text)}
+            value={entityText}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+          />
+          <TextInput
+            placeholder="Supervisor"
+            onChangeText={(text) => setSupervisor(text)}
+            value={supervisor}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+          />
 
-              <AppSubmitButton
-                color="primary"
-                mode="contained"
-                icon="check-circle"
-                text="Submit"
-                style={styles.button}
-              />
-            </ScrollView>
-          </AppForm>
+          <Button
+            mode="contained"
+            icon="check-circle"
+            style={styles.button}
+            onPress={() => onAddButtonPress()}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+          >
+            Submit
+          </Button>
         </View>
       </View>
     </View>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StatusBar, FlatList, StyleSheet } from "react-native";
 import {
   Avatar,
@@ -12,6 +12,7 @@ import {
   Paragraph,
   Button,
 } from "react-native-paper";
+import { firebase } from "../firebase/Config";
 
 import AppColors from "../configs/AppColors";
 
@@ -47,6 +48,27 @@ const employees = [
 ];
 
 function AppEmployee(props) {
+  const [users, setUsers] = useState([]);
+
+  const userRef = firebase.firestore().collection("users");
+
+  useEffect(() => {
+    userRef.onSnapshot(
+      (querySnapshot) => {
+        const newUsers = [];
+        querySnapshot.forEach((doc) => {
+          const user = doc.data();
+          user.id = doc.id;
+          newUsers.push(user);
+        });
+        setUsers(newUsers);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
   const [visible, setVisible] = React.useState(false);
 
   const showConfirmation = () => setVisible(true);
@@ -60,13 +82,13 @@ function AppEmployee(props) {
           barStyle="light-content"
         />
         <FlatList
-          data={employees}
-          keyExtractor={(employee) => employee.empID.toString()}
+          data={users}
+          keyExtractor={(employee) => employee.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.card}>
               <Avatar.Icon size={50} icon="account" />
-              <Title style={styles.title}>{item.empName}</Title>
-              <Caption>{item.empID}</Caption>
+              <Title style={styles.title}>{item.fullName}</Title>
+              <Caption>{item.email}</Caption>
               <View style={{ flexDirection: "row" }}>
                 <IconButton
                   icon="delete"

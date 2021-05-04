@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StatusBar, FlatList, StyleSheet } from "react-native";
 import {
   Avatar,
@@ -13,101 +13,9 @@ import {
   Button,
   Provider,
 } from "react-native-paper";
-
+import { firebase } from "../firebase/Config";
 import AppColors from "../configs/AppColors";
 import AppRenderIf from "../configs/AppRenderIf";
-
-const stocks = [
-  {
-    itemID: "#001",
-    itemName: "Anonymous Item",
-    quantity: "10",
-    unitPrice: "250",
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#002",
-    itemName: "Anonymous Item",
-    quantity: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#003",
-    itemName: "Anonymous Item",
-    quantity: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#004",
-    itemName: "Anonymous Item",
-    quantity: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kelaniya",
-  },
-  {
-    itemID: "#005",
-    itemName: "Anonymous Item",
-    quantity: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kelaniya",
-  },
-  {
-    itemID: "#006",
-    itemName: "Anonymous Item",
-    quantity: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#007",
-    itemName: "Anonymous Item",
-    quantity: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kelaniya",
-  },
-  {
-    itemID: "#008",
-    itemName: "Anonymous Item",
-    quantity: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#009",
-    itemName: "Anonymous Item",
-    quantity: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kadawatha",
-  },
-  {
-    itemID: "#010",
-    itemName: "Anonymous Item",
-    quantity: "100",
-    unitPrice: "250",
-
-    availability: true,
-    store: "Kelaniya",
-  },
-];
 
 function AppStock(props) {
   const [visible, setVisible] = React.useState(false);
@@ -115,6 +23,27 @@ function AppStock(props) {
   const showConfirmation = () => setVisible(true);
 
   const hideConfirmation = () => setVisible(false);
+
+  const [StockItems, setStockItems] = useState([]);
+
+  const stockRef = firebase.firestore().collection("stockItems");
+
+  useEffect(() => {
+    stockRef.onSnapshot(
+      (querySnapshot) => {
+        const newStock = [];
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          newStock.push(shop);
+        });
+        setStockItems(newStock);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
   return (
     <Provider>
       <View style={styles.screen}>
@@ -123,7 +52,7 @@ function AppStock(props) {
           barStyle="light-content"
         />
         <FlatList
-          data={stocks}
+          data={StockItems}
           keyExtractor={(stock) => stock.itemID.toString()}
           renderItem={({ item }) => (
             <View style={styles.card}>
@@ -140,9 +69,7 @@ function AppStock(props) {
                     icon="package-variant"
                     style={{ marginRight: "2%" }}
                   />
-                  <Title style={styles.title}>
-                    {item.itemName} ({item.store})
-                  </Title>
+                  <Title style={styles.title}>{item.itemName}</Title>
                 </View>
                 <View
                   style={{
@@ -152,17 +79,7 @@ function AppStock(props) {
                   }}
                 >
                   {AppRenderIf(
-                    item.availability,
-                    <Chip
-                      selectedColor={AppColors.green}
-                      style={{ margin: 10 }}
-                      icon="circle"
-                    >
-                      Available
-                    </Chip>
-                  )}
-                  {AppRenderIf(
-                    !item.availability,
+                    0 == item.stock,
                     <Chip
                       selectedColor={AppColors.red}
                       style={{ margin: 10 }}
@@ -172,18 +89,26 @@ function AppStock(props) {
                     </Chip>
                   )}
                   {AppRenderIf(
-                    10 < item.quantity,
-                    <Chip style={{ marginRight: "3%" }}>
-                      Qty: {item.quantity}
+                    0 < item.stock,
+                    <Chip
+                      selectedColor={AppColors.green}
+                      style={{ margin: 10 }}
+                      icon="circle"
+                    >
+                      Available
                     </Chip>
                   )}
                   {AppRenderIf(
-                    10 >= item.quantity,
+                    10 < item.stock,
+                    <Chip style={{ marginRight: "3%" }}>Qty: {item.stock}</Chip>
+                  )}
+                  {AppRenderIf(
+                    10 >= item.stock,
                     <Chip
                       selectedColor={AppColors.orange}
                       style={{ marginRight: "3%" }}
                     >
-                      Qty: {item.quantity} (Low)
+                      Qty: {item.stock} (Low)
                     </Chip>
                   )}
                   <Chip style={{ marginLeft: "3%" }}>Rs.{item.unitPrice}</Chip>

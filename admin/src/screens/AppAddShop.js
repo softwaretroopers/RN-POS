@@ -1,25 +1,37 @@
-import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  Dimensions,
-  StatusBar,
-} from "react-native";
-import { Caption, Title, ToggleButton } from "react-native-paper";
-import * as Yup from "yup";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Dimensions, StatusBar } from "react-native";
+import { Caption, ToggleButton, Button, TextInput } from "react-native-paper";
+import { firebase } from "../firebase/Config";
 
-import { AppForm, AppFormInput, AppSubmitButton } from "../components/forms";
 import AppColors from "../configs/AppColors";
 
-const validationSchema = Yup.object().shape({
-  sName: Yup.string().required().min(3).label("Shop Name"),
-  oName: Yup.string().required().min(3).label("Owner's Name"),
-});
-
 function AppAddShop(props) {
-  const [value, setValue] = React.useState("a");
+  const [value, setValue] = useState("a");
+
+  const [entityText, setEntityText] = useState("");
+
+  const entityRef = firebase.firestore().collection("shops");
+
+  const onAddButtonPress = () => {
+    if (entityText && entityText.length > 0) {
+      const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+      const data = {
+        name: entityText,
+        category: value,
+        id,
+      };
+      entityRef
+        .add(data)
+        .then((_doc) => {
+          setEntityText("");
+          props.navigation.goBack();
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
@@ -35,48 +47,42 @@ function AppAddShop(props) {
         ]}
       >
         <View style={styles.innerFooter}>
-          <AppForm
-            initialValues={{ email: "", password: "" }}
-            onSubmit={(values) => props.navigation.goBack()}
-            validationSchema={validationSchema}
+          <TextInput
+            placeholder="Shop Name"
+            onChangeText={(text) => setEntityText(text)}
+            value={entityText}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+          />
+
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
           >
-            <ScrollView>
-              <AppFormInput
-                autoCapitalize="words"
-                autoCorrect={false}
-                icon="office-building"
-                label="Shop Name"
-                placeholder="Enter the Shop Name"
-                name="sName"
-                textContentType="name"
-                mode="outlined"
-              />
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <Caption style={{ fontSize: 16 }}>Price Category </Caption>
-                <ToggleButton.Row
-                  onValueChange={(value) => setValue(value)}
-                  value={value}
-                >
-                  <ToggleButton icon="alpha-a" value="a"></ToggleButton>
-                  <ToggleButton icon="alpha-b" value="b"></ToggleButton>
-                  <ToggleButton icon="alpha-c" value="c"></ToggleButton>
-                </ToggleButton.Row>
-              </View>
-              <AppSubmitButton
-                color="primary"
-                mode="contained"
-                icon="check-circle"
-                text="Submit"
-                style={styles.button}
-              />
-            </ScrollView>
-          </AppForm>
+            <Caption style={{ fontSize: 16 }}>Price Category </Caption>
+            <ToggleButton.Row
+              onValueChange={(value) => setValue(value)}
+              value={value}
+            >
+              <ToggleButton icon="alpha-a" value="a"></ToggleButton>
+              <ToggleButton icon="alpha-b" value="b"></ToggleButton>
+              <ToggleButton icon="alpha-c" value="c"></ToggleButton>
+            </ToggleButton.Row>
+          </View>
+          <Button
+            mode="contained"
+            icon="check-circle"
+            style={styles.button}
+            onPress={() => onAddButtonPress()}
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+          >
+            Submit
+          </Button>
         </View>
       </View>
     </View>
