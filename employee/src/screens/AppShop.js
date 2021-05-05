@@ -33,7 +33,7 @@ function AppShop(props) {
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <FlatList
         data={shops}
-        keyExtractor={(shop) => shop.shopID.toString()}
+        keyExtractor={(shop) => shop.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.card}>
             <Avatar.Icon size={40} icon="office-building" />

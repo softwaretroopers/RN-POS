@@ -61,7 +61,7 @@ function AppAddInvoice(props) {
         <View>
           <FlatList
             data={shops}
-            keyExtractor={(shop) => shop.shopID.toString()}
+            keyExtractor={(shop) => shop.id.toString()}
             renderItem={({ item }) => (
               <TouchableHighlight>
                 <View style={styles.card}>

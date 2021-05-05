@@ -30,9 +30,10 @@ function AppAddItems(props) {
   const [value, setValue] = React.useState("cash");
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
-  const [entityText, setEntityText] = useState("");
-  const [entities, setEntities] = useState([]);
+  // const [entityText, setEntityText] = useState("");
+  // const [entities, setEntities] = useState([]);
 
+  //fetch add new item data
   const [StockInvItems, setStockInvItems] = useState([]);
   const stockInvRef = firebase.firestore().collection("stockItems");
 
@@ -52,13 +53,14 @@ function AppAddItems(props) {
       }
     );
   }, []);
+  //
 
-  // const renderEntity = ({ item }) => {
-  //   return <Text>{item.text}</Text>;
-  // };
-
-  //add stock to invoice
-  const stockInvRefAdd = firebase.firestore().collection("invoicesAddStocks");
+  //add data to database in Add-new-item
+  const stockInvRefAdd = firebase
+    .firestore()
+    .collection("invoices")
+    .doc(firebase.auth().currentUser.id)
+    .collection("invItems");
   const [StockInvItemAdd, setStockInvItemAdd] = useState([]);
   //stock add
   useEffect(() => {
@@ -81,21 +83,79 @@ function AppAddItems(props) {
   const onAddButtonPress = () => {
     const timestamp = firebase.firestore.FieldValue.serverTimestamp();
     const data = {
-      quantity: "12",
-      stockID: "NbJRN6cOBwJ4Z2wBm0J4",
+      stockID: "123123123",
       createdAt: timestamp,
     };
     stockInvRefAdd
       .add(data)
-      .then((_doc) => {
-        setEntityText("");
-        Keyboard.dismiss();
-      })
+      .then((_doc) => {})
       .catch((error) => {
         alert(error);
       });
   };
+  //
 
+  //invoice datacell fetch items
+  const [InvItemAdd, setInvItemAdd] = useState([]);
+  const InvItemAddRef = firebase.firestore().collection("stockItems");
+
+  useEffect(() => {
+    InvItemAddRef.onSnapshot(
+      (querySnapshot) => {
+        const newItemAdd = [];
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          newItemAdd.push(shop);
+        });
+        setInvItemAdd(newItemAdd);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+  //
+
+  // invoice data add to database
+  const InvRefAdd = firebase
+    .firestore()
+    .collection("invoices")
+    .doc(firebase.auth().currentUser.id)
+    .collection("invDetails");
+  const [InvItemDataAdd, setInvItemDataAdd] = useState([]);
+
+  useEffect(() => {
+    InvRefAdd.onSnapshot(
+      (querySnapshot) => {
+        const newStockInv = [];
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          newStockInv.push(shop);
+        });
+        setInvItemDataAdd(newStockInv);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+  const onAddButton = () => {
+    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+    const data = {
+      total: totalPrice,
+      payment_Method: value,
+      dateCreated: timestamp,
+    };
+    InvRefAdd.add(data)
+      .then((_doc) => {})
+      .catch((error) => {
+        alert(error);
+      });
+  };
+  //
   return (
     <View>
       <View
@@ -142,49 +202,44 @@ function AppAddItems(props) {
         </View>
         <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />
         <IconButton
-          onPress={(values) => props.navigation.navigate("AddReturnScreen")}
+          onPress={onAddButton}
           icon="arrow-collapse-right"
           size={24}
           color={AppColors.primary}
         ></IconButton>
       </View>
       <Divider />
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+        onPress={() => setModalVisible(true)}
+      >
+        <IconButton icon="plus" size={15} color={AppColors.primary} />
+        <Text style={{ color: AppColors.primary, alignSelf: "center" }}>
+          Add New Item
+        </Text>
+      </TouchableOpacity>
       <DataTable>
         <DataTable.Header>
           <DataTable.Title>Item</DataTable.Title>
           <DataTable.Title>Unit Price</DataTable.Title>
-          <DataTable.Title>Quantity</DataTable.Title>
+          <DataTable.Title>Quanitity</DataTable.Title>
           <DataTable.Title>Discount</DataTable.Title>
         </DataTable.Header>
-        <DataTable.Row>
-          <DataTable.Cell
-            style={{
-              justifyContent: "center",
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-              onPress={() => setModalVisible(true)}
-            >
-              <IconButton icon="plus" size={15} color={AppColors.primary} />
-              <Text style={{ color: AppColors.primary }}>Add New Item</Text>
-            </TouchableOpacity>
-          </DataTable.Cell>
-        </DataTable.Row>
+
         <FlatList
           style={{ marginBottom: "76%" }}
-          data={StockItems}
-          keyExtractor={(invoiceItem) => invoiceItem.itemID.toString()}
+          data={InvItemAdd}
+          keyExtractor={(invItem) => invItem.itemID.toString()}
           renderItem={({ item }) => (
             <DataTable.Row>
               <DataTable.Cell>{item.itemName}</DataTable.Cell>
               <DataTable.Cell>{item.unitPrice}</DataTable.Cell>
               <DataTable.Cell>
                 <TextInput
-                  placeholder={item.stock}
+                  placeholder={item.stock.toString()}
                   mode="outlined"
                   keyboardType="number-pad"
                   style={{
