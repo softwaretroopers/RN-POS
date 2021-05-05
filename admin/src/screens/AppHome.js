@@ -1,109 +1,207 @@
 import React from "react";
-import { View, FlatList, StyleSheet, StatusBar } from "react-native";
-import { Button, Avatar, Title, Caption, FAB } from "react-native-paper";
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  StatusBar,
+  ScrollView,
+} from "react-native";
+import {
+  Button,
+  Avatar,
+  Title,
+  Caption,
+  List,
+  DataTable,
+  Divider,
+  Text,
+  FAB,
+} from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
-
-const invoices = [
-  {
-    invoiceID: "#011801",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-  {
-    invoiceID: "#011802",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-  {
-    invoiceID: "#011803",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-  {
-    invoiceID: "#011804",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-  {
-    invoiceID: "#011805",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-  {
-    invoiceID: "#011806",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-  {
-    invoiceID: "#011807",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-  {
-    invoiceID: "#011808",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-  {
-    invoiceID: "#011809",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-  {
-    invoiceID: "#011810",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-  {
-    invoiceID: "#011811",
-    shopName: "Anonymous Shop",
-    date: "01/03/2021",
-  },
-];
+import { firebase } from "../firebase/Config";
 
 function AppHome(props) {
+  const [Invoices, setInvoices] = React.useState([]);
+
+  const invoiceRef = firebase.firestore().collection("invoices");
+
+  React.useEffect(() => {
+    invoiceRef.onSnapshot(
+      (querySnapshot) => {
+        const newInvoice = [];
+        querySnapshot.forEach((doc) => {
+          const invoice = doc.data();
+          invoice.id = doc.id;
+          newInvoice.push(invoice);
+        });
+        setInvoices(newInvoice);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+  const [InvoiceItem, setInvoiceItems] = React.useState([]);
+
+  const invoiceItemRef = firebase
+    .firestore()
+    .collection("invoices")
+    .doc("5y6QuZp8vEm5xI2d1INc")
+    .collection("invItems");
+
+  React.useEffect(() => {
+    invoiceItemRef.onSnapshot(
+      (querySnapshot) => {
+        const newInvoiceItem = [];
+        querySnapshot.forEach((doc) => {
+          const invoiceItem = doc.data();
+          invoiceItem.id = doc.id;
+          newInvoiceItem.push(invoiceItem);
+        });
+        setInvoiceItems(newInvoiceItem);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
   return (
-    <View>
+    <View style={styles.screen}>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <FlatList
-        data={invoices}
-        keyExtractor={(invoice) => invoice.invoiceID.toString()}
+        data={Invoices}
+        keyExtractor={(invoice) => invoice.id}
         renderItem={({ item }) => (
-          <View style={styles.invoiceInfoSection}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-evenly",
-              }}
-            >
+          <List.Section>
+            <View style={styles.invoiceInfoSection}>
               <View
                 style={{
+                  flexDirection: "row",
                   alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: "space-evenly",
                 }}
               >
-                <Avatar.Icon size={40} icon="file-document" />
-                <Title style={{ fontSize: 12 }}>{item.invoiceID}</Title>
-              </View>
-
-              <View style={{ flexDirection: "column" }}>
-                <Title style={styles.title}>{item.shopName}</Title>
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  <Caption style={styles.caption}>{item.date}</Caption>
+                  <Avatar.Icon size={40} icon="file-document" />
+                  <Title style={{ fontSize: 12 }}>{item.invoiceID}</Title>
+                </View>
+
+                <View style={{ flexDirection: "column" }}>
+                  <Title style={styles.title}>{item.shopName}</Title>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Caption style={styles.caption}></Caption>
+                  </View>
                 </View>
               </View>
-              <Button color={AppColors.primary} icon="eye">
-                View
-              </Button>
+              <List.Accordion title="View Invoice">
+                <Divider />
+                <View style={{ paddingBottom: "5%" }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      padding: "2%",
+                    }}
+                  >
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Avatar.Image
+                        size={60}
+                        source={require("../assets/adaptive-icon.png")}
+                        style={{ margin: "2%", backgroundColor: "white" }}
+                      />
+                      <Title style={{ fontWeight: "bold" }}>
+                        Software Troopers
+                      </Title>
+                    </View>
+                    <View>
+                      <Caption>Invoice : {item.invoiceID}</Caption>
+                      <Caption>Created : 12/04/2021</Caption>
+                      <Caption>Shop : {item.shopName}</Caption>
+                    </View>
+                  </View>
+                  <Divider />
+                  <ScrollView>
+                    <DataTable>
+                      <DataTable.Header>
+                        <DataTable.Cell>Payment Method :</DataTable.Cell>
+                        <DataTable.Cell numeric>
+                          <Text style={{ textTransform: "capitalize" }}>
+                            {item.payMethod}
+                          </Text>
+                        </DataTable.Cell>
+                      </DataTable.Header>
+                    </DataTable>
+                    <DataTable>
+                      <DataTable.Header>
+                        <DataTable.Title>Item</DataTable.Title>
+                        <DataTable.Title numeric>Unit Price</DataTable.Title>
+                        <DataTable.Title numeric>Quantity</DataTable.Title>
+                        <DataTable.Title numeric>Price</DataTable.Title>
+                      </DataTable.Header>
+                      <FlatList
+                        data={InvoiceItem}
+                        keyExtractor={(invoice) => invoice.id}
+                        renderItem={({ item }) => (
+                          <DataTable.Row>
+                            <DataTable.Cell>{item.itemName}</DataTable.Cell>
+                            <DataTable.Cell numeric>
+                              Rs.{item.unitPrice}
+                            </DataTable.Cell>
+                            <DataTable.Cell numeric>
+                              {item.quantity}
+                            </DataTable.Cell>
+                            <DataTable.Cell numeric>
+                              Rs.{item.unitPrice * item.quantity}
+                            </DataTable.Cell>
+                          </DataTable.Row>
+                        )}
+                      />
+                    </DataTable>
+                    <Title
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 16,
+                        alignSelf: "flex-end",
+                        marginEnd: "3.5%",
+                      }}
+                    >
+                      Total : Rs.1,000.00
+                    </Title>
+                  </ScrollView>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                      marginTop: "2%",
+                    }}
+                  >
+                    <Button
+                      color={AppColors.primary}
+                      icon="printer"
+                      mode="contained"
+                    >
+                      Print
+                    </Button>
+                  </View>
+                </View>
+              </List.Accordion>
             </View>
-          </View>
+          </List.Section>
         )}
       />
       <FAB
@@ -124,6 +222,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
     fontWeight: "bold",
   },
+  screen: { flex: 1 },
   caption: {
     fontSize: 14,
     lineHeight: 14,

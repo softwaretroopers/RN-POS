@@ -111,7 +111,7 @@ function AppStock(props) {
                       Qty: {item.stock} (Low)
                     </Chip>
                   )}
-                  <Chip style={{ marginLeft: "3%" }}>Rs.{item.unitPrice}</Chip>
+                  <Chip style={{ marginLeft: "3%" }}>Rs.{item.unitPriceA}</Chip>
                 </View>
               </View>
               <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />

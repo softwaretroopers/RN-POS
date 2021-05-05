@@ -1,11 +1,26 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Dimensions, StatusBar } from "react-native";
-import { Caption, ToggleButton, Button, TextInput } from "react-native-paper";
+import {
+  Caption,
+  ToggleButton,
+  Button,
+  TextInput,
+  Dialog,
+  Portal,
+  Paragraph,
+  Provider,
+} from "react-native-paper";
 import { firebase } from "../firebase/Config";
 
 import AppColors from "../configs/AppColors";
 
 function AppAddShop(props) {
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
+
   const [value, setValue] = useState("a");
 
   const [entityText, setEntityText] = useState("");
@@ -14,11 +29,11 @@ function AppAddShop(props) {
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
-      const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+      const key = Date.now();
       const data = {
         name: entityText,
         category: value,
-        id,
+        id: key,
       };
       entityRef
         .add(data)
@@ -33,59 +48,77 @@ function AppAddShop(props) {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={styles.text}>Enter New Shop Details</Text>
-      </View>
-      <View
-        style={[
-          styles.footer,
-          {
-            backgroundColor: AppColors.background,
-          },
-        ]}
-      >
-        <View style={styles.innerFooter}>
-          <TextInput
-            placeholder="Shop Name"
-            onChangeText={(text) => setEntityText(text)}
-            value={entityText}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-            mode="outlined"
-          />
+    <Provider>
+      <View style={styles.container}>
+        <StatusBar
+          backgroundColor={AppColors.primary}
+          barStyle="light-content"
+        />
+        <View style={styles.header}>
+          <Text style={styles.text}>Enter New Shop Details</Text>
+        </View>
+        <View
+          style={[
+            styles.footer,
+            {
+              backgroundColor: AppColors.background,
+            },
+          ]}
+        >
+          <View style={styles.innerFooter}>
+            <TextInput
+              placeholder="Shop Name"
+              onChangeText={(text) => setEntityText(text)}
+              value={entityText}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              mode="outlined"
+            />
 
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-            }}
-          >
-            <Caption style={{ fontSize: 16 }}>Price Category </Caption>
-            <ToggleButton.Row
-              onValueChange={(value) => setValue(value)}
-              value={value}
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+              }}
             >
-              <ToggleButton icon="alpha-a" value="a"></ToggleButton>
-              <ToggleButton icon="alpha-b" value="b"></ToggleButton>
-              <ToggleButton icon="alpha-c" value="c"></ToggleButton>
-            </ToggleButton.Row>
+              <Caption style={{ fontSize: 16 }}>Price Category </Caption>
+              <ToggleButton.Row
+                onValueChange={(value) => setValue(value)}
+                value={value}
+              >
+                <ToggleButton icon="alpha-a" value="a"></ToggleButton>
+                <ToggleButton icon="alpha-b" value="b"></ToggleButton>
+                <ToggleButton icon="alpha-c" value="c"></ToggleButton>
+              </ToggleButton.Row>
+            </View>
+            <Button
+              mode="contained"
+              icon="check-circle"
+              style={styles.button}
+              onPress={() => {
+                onAddButtonPress(), showDialog();
+              }}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+            >
+              Submit
+            </Button>
+            <Portal>
+              <Dialog visible={visible} onDismiss={hideDialog}>
+                <Dialog.Title>Alert</Dialog.Title>
+                <Dialog.Content>
+                  <Paragraph>Successfully Added.</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button onPress={hideDialog}>Done</Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
           </View>
-          <Button
-            mode="contained"
-            icon="check-circle"
-            style={styles.button}
-            onPress={() => onAddButtonPress()}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-          >
-            Submit
-          </Button>
         </View>
       </View>
-    </View>
+    </Provider>
   );
 }
 

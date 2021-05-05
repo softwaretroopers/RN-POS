@@ -16,37 +16,6 @@ import { firebase } from "../firebase/Config";
 
 import AppColors from "../configs/AppColors";
 
-const employees = [
-  {
-    empID: "ST-01N1",
-    empName: "Mr.Anonymous",
-  },
-  {
-    empID: "ST-01N2",
-    empName: "Mr.Anonymous",
-  },
-  {
-    empID: "ST-01N3",
-    empName: "Mr.Anonymous",
-  },
-  {
-    empID: "ST-01N4",
-    empName: "Mr.Anonymous",
-  },
-  {
-    empID: "ST-01N5",
-    empName: "Mr.Anonymous",
-  },
-  {
-    empID: "ST-01N6",
-    empName: "Mr.Anonymous",
-  },
-  {
-    empID: "ST-01N7",
-    empName: "Mr.Anonymous",
-  },
-];
-
 function AppEmployee(props) {
   const [users, setUsers] = useState([]);
 

@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Dimensions, StatusBar } from "react-native";
-import { Caption, ToggleButton, Button, TextInput } from "react-native-paper";
+import {
+  Button,
+  TextInput,
+  Dialog,
+  Portal,
+  Paragraph,
+  Provider,
+} from "react-native-paper";
 import { firebase } from "../firebase/Config";
 
 import AppColors from "../configs/AppColors";
 
 function AppAddStore(props) {
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
   const [supervisor, setSupervisor] = useState("");
 
   const [entityText, setEntityText] = useState("");
@@ -14,10 +26,11 @@ function AppAddStore(props) {
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
+      const key = Date.now();
       const data = {
         name: entityText,
         supervisor: supervisor,
-        id,
+        id: key,
       };
       entityRef
         .add(data)
@@ -32,50 +45,68 @@ function AppAddStore(props) {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={styles.text}>Enter New Store Details</Text>
-      </View>
-      <View
-        style={[
-          styles.footer,
-          {
-            backgroundColor: AppColors.background,
-          },
-        ]}
-      >
-        <View style={styles.innerFooter}>
-          <TextInput
-            placeholder="Store Name"
-            onChangeText={(text) => setEntityText(text)}
-            value={entityText}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-            mode="outlined"
-          />
-          <TextInput
-            placeholder="Supervisor"
-            onChangeText={(text) => setSupervisor(text)}
-            value={supervisor}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-            mode="outlined"
-          />
+    <Provider>
+      <View style={styles.container}>
+        <StatusBar
+          backgroundColor={AppColors.primary}
+          barStyle="light-content"
+        />
+        <View style={styles.header}>
+          <Text style={styles.text}>Enter New Store Details</Text>
+        </View>
+        <View
+          style={[
+            styles.footer,
+            {
+              backgroundColor: AppColors.background,
+            },
+          ]}
+        >
+          <View style={styles.innerFooter}>
+            <TextInput
+              placeholder="Store Name"
+              onChangeText={(text) => setEntityText(text)}
+              value={entityText}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              mode="outlined"
+            />
+            <TextInput
+              placeholder="Supervisor"
+              onChangeText={(text) => setSupervisor(text)}
+              value={supervisor}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              mode="outlined"
+            />
 
-          <Button
-            mode="contained"
-            icon="check-circle"
-            style={styles.button}
-            onPress={() => onAddButtonPress()}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-          >
-            Submit
-          </Button>
+            <Button
+              mode="contained"
+              icon="check-circle"
+              style={styles.button}
+              onPress={() => {
+                onAddButtonPress(), showDialog();
+              }}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+            >
+              Submit
+            </Button>
+            <Portal>
+              <Dialog visible={visible} onDismiss={hideDialog}>
+                <Dialog.Title>Alert</Dialog.Title>
+                <Dialog.Content>
+                  <Paragraph>Successfully Added.</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button onPress={hideDialog}>Done</Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
+          </View>
         </View>
       </View>
-    </View>
+    </Provider>
   );
 }
 

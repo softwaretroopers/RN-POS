@@ -1,40 +1,116 @@
-import React from "react";
-import { View, StyleSheet, StatusBar } from "react-native";
-import { FAB, Avatar, Title, Subheading, Caption } from "react-native-paper";
-
+import React, { useCallback } from "react";
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  TouchableHighlight,
+  Linking,
+} from "react-native";
+import {
+  Avatar,
+  Title,
+  Dialog,
+  Portal,
+  Paragraph,
+  Provider,
+  Button,
+  Chip,
+} from "react-native-paper";
+import { firebase } from "../firebase/Config";
 import AppColors from "../configs/AppColors";
 
 function AppProfile(props) {
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
+  const handlePress = useCallback(async () => {
+    // Open the custom settings if the app has one
+    await Linking.openURL("tel:+94717827878");
+  }, []);
+  const handleEmailPress = useCallback(async () => {
+    // Open the custom settings if the app has one
+    await Linking.openURL("mailto: support@expo.io");
+  }, []);
   return (
-    <View>
-      <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
-      <View style={styles.accountTop}>
-        <FAB
-          style={styles.fab}
-          small
-          icon="pen"
-          onPress={() => props.navigation.navigate("ProfileEditScreen")}
+    <Provider>
+      <View>
+        <StatusBar
+          backgroundColor={AppColors.primary}
+          barStyle="light-content"
         />
-        <Avatar.Icon size={100} icon="office-building" />
-        <Title style={{ color: AppColors.background }}>Anonymous Inc</Title>
-        <Subheading style={{ color: AppColors.background }}>
-          Mr.Anonymous
-        </Subheading>
-        <Caption style={{ color: AppColors.background }}>
-          support@softwaretroopers.com
-        </Caption>
+        <View style={styles.accountTop}>
+          <Avatar.Image
+            size={80}
+            source={require("../assets/adaptive-icon.png")}
+            style={{ margin: "2%", backgroundColor: "white" }}
+          />
+          <Title style={{ fontWeight: "bold", color: AppColors.black }}>
+            Software{" "}
+            <Title style={{ fontWeight: "bold", color: AppColors.red }}>
+              Troopers
+            </Title>
+          </Title>
+          <View style={{ flexDirection: "row" }}>
+            <Chip style={{ margin: "3%" }} icon="phone" onPress={handlePress}>
+              Contact Us
+            </Chip>
+            <Chip
+              style={{ margin: "3%" }}
+              icon="email"
+              onPress={handleEmailPress}
+            >
+              Email Us
+            </Chip>
+          </View>
+
+          <Button
+            style={{ marginVertical: "5%" }}
+            mode="contained"
+            icon="logout"
+            color={AppColors.primary}
+            onPress={() => {
+              firebase
+                .auth()
+                .signOut()
+                .then(
+                  () => {
+                    showDialog();
+                  },
+                  function (error) {
+                    // An error happened.
+                  }
+                );
+            }}
+          >
+            Logout
+          </Button>
+          <Portal>
+            <Dialog visible={visible} onDismiss={hideDialog}>
+              <Dialog.Title>Alert</Dialog.Title>
+              <Dialog.Content>
+                <Paragraph>Logging Out Successful</Paragraph>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button onPress={hideDialog}>Done</Button>
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
+        </View>
       </View>
-    </View>
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
   accountTop: {
-    backgroundColor: AppColors.primary,
+    backgroundColor: AppColors.background,
     borderRadius: 20,
     margin: "2%",
     padding: "2%",
     alignItems: "center",
+    elevation: 10,
   },
   accountMiddle: {
     padding: 20,
@@ -59,12 +135,6 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 20,
     marginLeft: 10,
-  },
-  fab: {
-    position: "absolute",
-    right: 10,
-    top: 10,
-    backgroundColor: "white",
   },
 });
 

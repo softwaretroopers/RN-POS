@@ -53,7 +53,7 @@ function AppShop(props) {
         />
         <FlatList
           data={shops}
-          keyExtractor={(shop) => shop.id.toString()}
+          keyExtractor={(shop) => shop.id}
           renderItem={({ item }) => (
             <View style={styles.card}>
               <Avatar.Icon size={40} icon="office-building" />

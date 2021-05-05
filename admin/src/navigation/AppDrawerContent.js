@@ -1,90 +1,119 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { Avatar, Title, Caption, Drawer, Divider } from "react-native-paper";
+import {
+  Avatar,
+  Title,
+  Caption,
+  Drawer,
+  Divider,
+  Dialog,
+  Portal,
+  Paragraph,
+  Provider,
+  Button,
+} from "react-native-paper";
 import { firebase } from "../firebase/Config";
 
 function AppDrawerContent(props) {
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
   return (
-    <View style={{ flex: 1 }}>
-      <DrawerContentScrollView {...props}>
-        <View style={styles.drawerContent}>
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate("ProfileScreens");
-            }}
-          >
-            <View style={styles.userInfoSection}>
-              <View style={{ flexDirection: "row", marginTop: 15 }}>
-                <Avatar.Icon size={50} icon="account"></Avatar.Icon>
-                <View style={{ marginLeft: 15, flexDirection: "column" }}>
-                  <Title style={styles.title}>Admin</Title>
-                  <Caption style={styles.caption}>Point Of Sales</Caption>
+    <Provider>
+      <View style={{ flex: 1 }}>
+        <DrawerContentScrollView {...props}>
+          <View style={styles.drawerContent}>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate("ProfileScreens");
+              }}
+            >
+              <View style={styles.userInfoSection}>
+                <View style={{ flexDirection: "row", marginTop: 15 }}>
+                  <Avatar.Icon size={50} icon="account"></Avatar.Icon>
+                  <View style={{ marginLeft: 15, flexDirection: "column" }}>
+                    <Title style={styles.title}>Admin</Title>
+                    <Caption style={styles.caption}>Point Of Sales</Caption>
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <Drawer.Section style={styles.drawerSection}>
-            <Divider />
-            <Drawer.Item
-              label="Invoices"
-              onPress={() => {
-                props.navigation.navigate("HomeScreens");
-              }}
-              icon="file-document"
-            />
-            <Drawer.Item
-              label="Stock"
-              onPress={() => {
-                props.navigation.navigate("StockScreens");
-              }}
-              icon="package-variant"
-            />
-            <Drawer.Item
-              label="Store"
-              onPress={() => {
-                props.navigation.navigate("StoreScreens");
-              }}
-              icon="store"
-            />
-            <Drawer.Item
-              label="Shops"
-              onPress={() => {
-                props.navigation.navigate("ShopScreens");
-              }}
-              icon="office-building"
-            />
-            <Drawer.Item
-              label="Employees"
-              onPress={() => {
-                props.navigation.navigate("EmployeeScreens");
-              }}
-              icon="account-multiple"
-            />
-          </Drawer.Section>
-        </View>
-      </DrawerContentScrollView>
-      <Drawer.Section style={styles.bottomDrawerSection}>
-        <Drawer.Item
-          label="Logout"
-          onPress={() => {
-            firebase
-              .auth()
-              .signOut()
-              .then(
-                () => {
-                  props.navigation.navigate("LoginScreen");
-                },
-                function (error) {
-                  // An error happened.
-                }
-              );
-          }}
-          icon="logout"
-        />
-      </Drawer.Section>
-    </View>
+            <Drawer.Section style={styles.drawerSection}>
+              <Divider />
+              <Drawer.Item
+                label="Invoices"
+                onPress={() => {
+                  props.navigation.navigate("HomeScreens");
+                }}
+                icon="file-document"
+              />
+              <Drawer.Item
+                label="Stock"
+                onPress={() => {
+                  props.navigation.navigate("StockScreens");
+                }}
+                icon="package-variant"
+              />
+              <Drawer.Item
+                label="Store"
+                onPress={() => {
+                  props.navigation.navigate("StoreScreens");
+                }}
+                icon="store"
+              />
+              <Drawer.Item
+                label="Shops"
+                onPress={() => {
+                  props.navigation.navigate("ShopScreens");
+                }}
+                icon="office-building"
+              />
+              <Drawer.Item
+                label="Employees"
+                onPress={() => {
+                  props.navigation.navigate("EmployeeScreens");
+                }}
+                icon="account-multiple"
+              />
+            </Drawer.Section>
+          </View>
+        </DrawerContentScrollView>
+        <Drawer.Section style={styles.bottomDrawerSection}>
+          <Drawer.Item
+            label="Logout"
+            onPress={() => {
+              firebase
+                .auth()
+                .signOut()
+                .then(
+                  () => {
+                    showDialog();
+                  },
+                  function (error) {
+                    // An error happened.
+                  }
+                );
+            }}
+            icon="logout"
+          />
+        </Drawer.Section>
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Title>Alert</Dialog.Title>
+            <Dialog.Content>
+              <Paragraph>Logging Out Successful</Paragraph>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialog}>Done</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+      </View>
+    </Provider>
   );
 }
 

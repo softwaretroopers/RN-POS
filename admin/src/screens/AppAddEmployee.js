@@ -1,17 +1,23 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  Dimensions,
-  StatusBar,
-} from "react-native";
+import { StyleSheet, View, Text, Dimensions, StatusBar } from "react-native";
 import { firebase } from "../firebase/Config";
-import { TextInput, Button } from "react-native-paper";
+import {
+  TextInput,
+  Button,
+  Dialog,
+  Portal,
+  Paragraph,
+  Provider,
+} from "react-native-paper";
 import AppColors from "../configs/AppColors";
 
 function AppAddEmployee(props) {
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,6 +37,7 @@ function AppAddEmployee(props) {
           id: uid,
           email,
           fullName,
+          createdAt: timestamp,
         };
 
         const usersRef = firebase.firestore().collection("users");
@@ -50,68 +57,86 @@ function AppAddEmployee(props) {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={styles.text}>Enter New User Details</Text>
-      </View>
-      <View
-        style={[
-          styles.footer,
-          {
-            backgroundColor: AppColors.background,
-          },
-        ]}
-      >
-        <View style={styles.innerFooter}>
-          <TextInput
-            placeholder="Full Name"
-            onChangeText={(text) => setFullName(text)}
-            value={fullName}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-            mode="outlined"
-          />
-          <TextInput
-            placeholder="E-mail"
-            onChangeText={(text) => setEmail(text)}
-            value={email}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-            mode="outlined"
-          />
-          <TextInput
-            secureTextEntry
-            placeholder="Password"
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-            mode="outlined"
-          />
-          <TextInput
-            secureTextEntry
-            placeholder="Confirm Password"
-            onChangeText={(text) => setConfirmPassword(text)}
-            value={confirmPassword}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-            mode="outlined"
-          />
+    <Provider>
+      <View style={styles.container}>
+        <StatusBar
+          backgroundColor={AppColors.primary}
+          barStyle="light-content"
+        />
+        <View style={styles.header}>
+          <Text style={styles.text}>Enter New User Details</Text>
+        </View>
+        <View
+          style={[
+            styles.footer,
+            {
+              backgroundColor: AppColors.background,
+            },
+          ]}
+        >
+          <View style={styles.innerFooter}>
+            <TextInput
+              placeholder="Full Name"
+              onChangeText={(text) => setFullName(text)}
+              value={fullName}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              mode="outlined"
+            />
+            <TextInput
+              placeholder="E-mail"
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              mode="outlined"
+            />
+            <TextInput
+              secureTextEntry
+              placeholder="Password"
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              mode="outlined"
+            />
+            <TextInput
+              secureTextEntry
+              placeholder="Confirm Password"
+              onChangeText={(text) => setConfirmPassword(text)}
+              value={confirmPassword}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              mode="outlined"
+            />
 
-          <Button
-            mode="contained"
-            icon="check-circle"
-            style={styles.button}
-            onPress={() => onRegisterPress()}
-            underlineColorAndroid="transparent"
-            autoCapitalize="none"
-          >
-            Login
-          </Button>
+            <Button
+              mode="contained"
+              icon="check-circle"
+              style={styles.button}
+              onPress={() => {
+                onRegisterPress(), showDialog();
+              }}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+            >
+              Submit
+            </Button>
+            <Portal>
+              <Dialog visible={visible} onDismiss={hideDialog}>
+                <Dialog.Title>Alert</Dialog.Title>
+                <Dialog.Content>
+                  <Paragraph>Successfully Added.</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button onPress={hideDialog}>Done</Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
+          </View>
         </View>
       </View>
-    </View>
+    </Provider>
   );
 }
 

@@ -1,12 +1,6 @@
 import React, { useCallback } from "react";
-import {
-  View,
-  StyleSheet,
-  StatusBar,
-  TouchableHighlight,
-  Linking,
-} from "react-native";
-import { Avatar, Title, Caption, Button, Chip } from "react-native-paper";
+import { View, StyleSheet, StatusBar, Linking } from "react-native";
+import { Avatar, Button, Chip } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
 
@@ -23,7 +17,11 @@ function AppProfile(props) {
     <View>
       <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
       <View style={styles.accountTop}>
-        <Avatar.Icon size={100} icon="account" />
+        <Avatar.Image
+          size={80}
+          source={require("../assets/adaptive-icon.png")}
+          style={{ margin: "2%", backgroundColor: "white" }}
+        />
         <View style={{ flexDirection: "row" }}>
           <Chip style={{ margin: "3%" }} icon="phone" onPress={handlePress}>
             Contact Us
@@ -41,7 +39,7 @@ function AppProfile(props) {
           style={{ marginVertical: "5%" }}
           mode="contained"
           icon="logout"
-          color={AppColors.background}
+          color={AppColors.primary}
           onPress={() => props.navigation.popToTop()}
         >
           Logout
@@ -53,11 +51,12 @@ function AppProfile(props) {
 
 const styles = StyleSheet.create({
   accountTop: {
-    backgroundColor: AppColors.primary,
+    backgroundColor: AppColors.background,
     borderRadius: 20,
     margin: "2%",
     padding: "2%",
     alignItems: "center",
+    elevation: 10,
   },
   accountMiddle: {
     padding: 20,

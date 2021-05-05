@@ -13,7 +13,6 @@ import AppShop from "./src/screens/AppShop";
 import AppStock from "./src/screens/AppStock";
 import AppEmployee from "./src/screens/AppEmployee";
 import AppProfile from "./src/screens/AppProfile";
-import AppProfileEdit from "./src/screens/AppProfileEdit";
 import AppAddShop from "./src/screens/AppAddShop";
 import AppAddEmployee from "./src/screens/AppAddEmployee";
 
@@ -323,7 +322,7 @@ const ProfileScreens = (props) => (
       name="ProfileScreen"
       component={AppProfile}
       options={{
-        title: "Profile",
+        title: "Settings",
         headerLeft: () => (
           <Button
             labelStyle={{ fontSize: 24 }}
@@ -333,11 +332,6 @@ const ProfileScreens = (props) => (
           />
         ),
       }}
-    />
-    <ProfileStack.Screen
-      name="ProfileEditScreen"
-      component={AppProfileEdit}
-      options={{ headerShown: false }}
     />
   </ProfileStack.Navigator>
 );
