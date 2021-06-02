@@ -2,5 +2,4 @@
 
 A Mobile Application, developed using React Native, by Software Troopers.
 
-Authors - _@kushenthimira_ (Cipher), _@Nehanga-Tharushka_ (Nehanga)
-Organization - @softwaretroopers (_softwaretroopers.com_)
+**Author:** [Kushen De Silva (@kushenthimira)](https://github.com/kushenthimira) | [Facebook](https://facebook.com/ciphernpc) | [LinkedIn](https://linkedin.com/in/kushenthimira) | [WhatsApp](https://wa.me/94717827878) |
